@@ -1,65 +1,75 @@
-## Client Side
- 
-`yarn` to install node modules (don't use `npm install` as we don't want to mix package managers and create duplicate lock files)
-Then use`yarn prepare` to set up `husky` precommit hooks
+# Gotchiverse 2D
+
+Gotchiverse 2D is the browser game client for the Aavegotchi Gotchiverse. It is a Next.js, React, TypeScript, and Phaser application with game data and shared helpers vendored in `shared_code/`.
+
+## Requirements
+
+- Node.js 20 or newer
+- Yarn 1.22.x
+
+This repo uses `yarn.lock`; do not use `npm install`.
+
+## Quick Start
 
 ```bash
-# With a local server
-`yarn dev`
-
-# With a tunnelled server
-`yarn dev:prod`
+git clone https://github.com/aavegotchi/gotchiverse-2d.git
+cd gotchiverse-2d
+yarn install --frozen-lockfile
+cp .env.example .env
+yarn dev
 ```
 
-With localtunnel on first connection, go to https://aavegotchi-realm.loca.lt/ and press "click to continue" to allow cors.
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001).
 
-## Env Vars
+The default `.env.example` values are safe placeholders. Some wallet, captcha, NFT, Discord, Sentry, and backend-backed flows need real environment values before they work end to end.
 
-Create an `.env` and `.env.prod.env` file. In .env add `REALM_NETWORK='kovan' SERVER_URL='http://localhost:3002'`and within .env.prod.env add `REALM_NETWORK='matic'` (or kovan) `SERVER_URL='https://aavegotchi-realm.loca.lt/'`
-
-## aavegotchi-shared-code
-
-Be sure to check out this repo as it's a shared git submodule dependency https://github.com/aavegotchi/aavegotchi-shared-code. This project won't run without it.
-You should follow the steps outlined in that git repo's README. TLDR; run `git config --global submodule.recurse true` once. Then `git submodule update --recursive --remote` to update to the latest shared resources. The git submodule does not get updated with `git pull`.
-
-## Server Side
-
-For the server we are allowing two blockchain networks, kovan and polygon.
-Open a development local server with yarn server or yarn server:prod. (server URL: http://localhost:3002)
-
-To expose the local server we are using a tunnelling service. (server URL: https://aavegotchi-realm.loca.lt/)
-
+## Common Scripts
 
 ```bash
-# Local server on kovan testnet
-`yarn server:dev`
-
-# Local server on polygon network
-`yarn server:prod`
-
-# Server with localtunnel on kovan testnet
-`yarn tunnel-server`
-
-# Server with localtunnel on polygon network
-`yarn tunnel-server:prod`
+yarn dev        # Start the local Next.js dev server on port 3001
+yarn lint       # Type-check the project
+yarn build      # Build the production app
+yarn verify     # Run lint and production build
+yarn start      # Start a built production app
 ```
 
-## Git Branch Workflow and Deploying
+There is no separate server package in this public repo. Backend API calls are configured with `NEXT_PUBLIC_API_URL` and related environment variables.
 
-ALPHA:
-Alpha is where our bleeding-edge, definitely-don't-release-yet work is pushed. 
-Alpha is on auto-deploy through Vercel once code is pushed to the `alpha` branch. Once deployed, the url is http://alpha.gotchiverse.io/ .   
+## Environment Files
 
-DEVELOPMENT:
-Development is where our current "next to be release" code is merged and pushed. Once deployed, the url is https://development.gotchiverse.io . 
+The main local command, `yarn dev`, reads `.env`.
 
-STAGING:
-Staging is on auto-deploy through Vercel once code is pushed to the staging branch. Once deployed, the url is http://beta.gotchiverse.io/ .   
+Other scripts read environment-specific files:
 
-PRODUCTION:
-Production is on auto-deploy through Vercel once code is pushed to `master`. Once deployed, the url is https://verse.aagegotchi.com/ .
+```bash
+yarn dev:local         # .env.local.env
+yarn dev:prod          # .env.prod.env
+yarn dev:alpha         # .env.alpha.env
+yarn dev:beta          # .env.beta.env
+yarn dev:combat        # .env.combat.env
+yarn dev:dev           # .env.development.env
+yarn dev:local:mumbai  # .env.local.env with ALCHEMICA_NETWORK=mumbai
+```
 
+Keep real env files out of Git. Only `.env.example` should be committed.
 
+## Shared Code
 
+`shared_code/` is committed directly in this public repository. It is not a Git submodule, so a normal clone contains everything needed to install, type-check, and build the app.
 
+## Docker
+
+Build and run the production image:
+
+```bash
+docker build -t gotchiverse-2d .
+docker run --rm -p 3001:3001 --env-file .env gotchiverse-2d
+```
+
+## Security
+
+- Do not commit real `.env` files, API keys, private keys, mnemonics, logs, or generated build output.
+- Run `yarn audit` before dependency updates are merged.
+- Run `gitleaks dir . --redact` before publishing sensitive changes.
+
+GitHub secret scanning, push protection, and Dependabot security updates are enabled on the public repository.

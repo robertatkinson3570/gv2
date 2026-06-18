@@ -2,6 +2,11 @@
   "name": "gotchiverse-2d",
   "version": "0.7.4",
   "private": true,
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=20.0.0",
+    "yarn": ">=1.22.0"
+  },
   "scripts": {
     "dev": "env-cmd -f .env next -p 3001",
     "dev:local": "env-cmd -f .env.local.env next -p 3001",
@@ -13,11 +18,9 @@
     "dev:beta": "env-cmd -f .env.beta.env next -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --project ./tsconfig.json --noEmit",
-    "docker:local": "env-cmd -f .env.docker.local.env next dev -p 3001",
-    "docker:alpha": "next dev -p 3001",
-    "docker:development": "env-cmd -f .env.docker.development.env next dev -p 3001",
-    "docker:production": "env-cmd -f .env.docker.production.env next start -p 3001"
+    "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "lint": "yarn typecheck",
+    "verify": "yarn lint && yarn build"
   },
   "dependencies": {
     "@clover-network/clover-connector": "^1.1.0",
