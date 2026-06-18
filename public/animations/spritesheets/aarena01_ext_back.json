@@ -1,0 +1,18 @@
+{ "columns":1,
+ "image":"aarena01_ext_back.png",
+ "imageheight":1024,
+ "imagewidth":1472,
+ "leftOffset":{
+    "x": -640,
+    "y": -384
+ },
+ "margin":0,
+ "name":"aarena01_ext_back",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.9.1",
+ "tileheight":1024,
+ "tilewidth":1472,
+ "type":"tileset",
+ "version":"1.8"
+}

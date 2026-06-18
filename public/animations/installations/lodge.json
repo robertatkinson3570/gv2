@@ -1,0 +1,14 @@
+{ "columns":3,
+ "image":"lodge.png",
+ "imageheight":1152,
+ "imagewidth":960,
+ "margin":0,
+ "name":"lodge",
+ "spacing":0,
+ "tilecount":9,
+ "tiledversion":"1.7.0",
+ "tileheight":384,
+ "tilewidth":320,
+ "type":"tileset",
+ "version":"1.6"
+}

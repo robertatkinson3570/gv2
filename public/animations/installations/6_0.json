@@ -1,0 +1,18 @@
+{ "columns":3,
+ "image":"maaker_level.png",
+ "imageheight":576,
+ "imagewidth":768,
+ "margin":0,
+ "name":"maaker_level",
+ "spacing":0,
+ "tilecount":9,
+ "tiledversion":"1.7.0",
+ "tileheight":192,
+ "tilewidth":256,
+ "type":"tileset",
+ "version":"1.6",
+ "offset":{
+    "x": -64,
+    "y": -64
+ }
+}

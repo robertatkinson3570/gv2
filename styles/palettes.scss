@@ -1,0 +1,233 @@
+:root {
+  --col-transparent: transparent;
+  --col-current: currentColor;
+
+  --col-pink-border: #c82ac2;
+  --col-purple-border: #8348ff;
+  --col-info-border: #4adbfb;
+  --col-blue-border: #00b9e1;
+  
+  --col-default-border: var(--col-pink-border);
+  --col-halloween-border: #ec6113;
+  --col-tooorkey-border: #ec6113;
+
+  --col-black: #000000;
+  --col-dark-grey: #262626;
+  --col-dark-gray-400: #011132;
+  --col-grey: #be9bb4;
+  --col-white: #ffffff;
+  
+  --col-grey-200: #b7b3bc;
+  --col-grey-300: #806d7f;
+  --col-grey-400: #705f6f;
+  --col-grey-500: #604c5f;
+  --col-grey-600: #452d44;
+  --col-grey-700: #848484;
+  --col-grey-800: #78B1BD;
+
+  --col-pink-200: #ff7bfb;
+  --col-pink-210: #ffa9fc;
+  --col-pink-250: #eb70ff;
+  --col-pink-300: #f643f0;
+  --col-pink-350: #f31ced;
+  --col-pink-400: #c82ac2;
+  --col-pink-450: #e52fdf;
+  --col-pink-500: #a712a1;
+  --col-pink-550: #94008e;
+  --col-pink-600: #71266e;
+  --col-pink-700: #3d003a;
+  --col-pink-800: #9c00d3;
+
+  --col-purple-100: #e3c8ff;
+  --col-purple-200: #c1a6fd;
+  --col-purple-250: #ba90ff;
+  --col-purple-300: #a065ff;
+  --col-purple-320: rgba(160, 101, 255, 0.2);
+  --col-purple-340: rgba(160, 101, 255, 0.4);
+  --col-purple-400: #8348ff;
+  --col-purple-450: #6922ff;
+  --col-purple-500: #5f2ec8;
+  --col-purple-600: #312e34;
+  --col-purple-700: #3d0981;
+  --col-purple-750: #2a1655;
+  --col-purple-800: #3d1a89;
+  --col-purple-850: #2c0a56;
+  --col-purple-900: #230e4f;
+  --col-purple-950: #260d5c;
+
+  --col-green-200: #2bbc39;
+  --col-green-300: #019c47;
+  --col-green-400: #00a44b;
+
+  --col-success-200: #00988f;
+  --col-success-300: #00f470;
+  --col-success-350: #00bf58;
+  --col-success-400: #01b253;
+  --col-success-500: #049948;
+  --col-success-600: #004c1f;
+
+  --col-info-100: #b0f1ff;
+  --col-info-150: #bbe7ff;
+  --col-info-200: #9dedff;
+  --col-info-250: #8affff;
+  --col-info-300: #33daff;
+  --col-info-400: #00b9e1;
+  --col-info-450: #00f2ee;
+  --col-info-500: #008dca;
+  --col-info-550: #0c1e41;
+  --col-info-600: #004e7a;
+  --col-info-650: #005b6f;
+  --col-info-700: #185d86;
+  --col-info-800: #4adbfb;
+  --col-info-850: #0055b8;
+  --col-info-900: #148ef4;
+  --col-info-950: #1945DF;
+  
+  --col-blue-100: #233abb;
+  --col-blue-200: #374ac1;
+  --col-blue-250: #132ebc;
+  --col-blue-300: #141d8d;
+  --col-blue-330: #0934a3;
+  --col-blue-400: #0c6fcb;  
+  --col-blue-440: #06abe0;
+  --col-blue-450: #0855ca;
+  --col-blue-500: #08449e;
+  --col-blue-550: #2186e3;
+  --col-blue-600: #077dea;
+  --col-blue-650: #0089ec;
+  --col-blue-750: rgba(25, 69, 223, 0.9);
+  --col-blue-700: #0127ae; 
+  --col-blue-900: #00274b;
+  --col-blue-950: #180747;
+  
+  --col-halloween-200: #ffa06b;
+  --col-halloween-300: #fb7e37;
+  --col-halloween-400: #e75e11;
+  --col-halloween-500: #c54700;
+  --col-halloween-600: #712c05;
+
+  --col-warning-400: #d7dd26;
+  --col-error-400: #dd2c26;
+
+  --col-common-300: #8064ff;
+  --col-common-400: #6e4efd;
+  --col-common-500: #4e31dd;
+
+  --col-uncommon-300: #3cd6eb;
+  --col-uncommon-400: #33bacc;
+  --col-uncommon-500: #36818e;
+
+  --col-rare-300: #71c2ff;
+  --col-rare-400: #29a4ff;
+  --col-rare-500: #0074ca;
+
+  --col-legendary-300: #f6d4a1;
+  --col-legendary-400: #ffc36b;
+  --col-legendary-450: #ffd28d;
+  --col-legendary-500: #c6792e;
+
+  --col-mythical-300: #f643f0;
+  --col-mythical-400: #c82ac2;
+  --col-mythical-500: #a712a1;
+
+  --col-godlike-300: #51b92d;
+  --col-godlike-400: #3a931b;
+  --col-godlike-500: #2b7907;
+
+  --col-magenta-200: #f31ced;
+
+  --col-white-100: #f9f9f9;
+  --col-white-200: #e4f4ff;
+
+  --col-yellow-border: #ffd01f;
+  --col-yellow-50: #f1e6f2;
+  --col-yellow-100: #ffd600;
+  --col-yellow-200: #d17927;
+  --col-yellow-300: #e29b12;
+  --col-yellow-400: #e3a400;
+
+  --col-gotchi-common-300: #ac9cf7;
+  --col-gotchi-common-400: #9c87fc;
+  --col-gotchi-common-500: #8d75fa;
+  --col-gotchi-common-card-border: #9FA3FF; 
+  --col-gotchi-common-card-label-bg: #624CE8;
+  --col-gotchi-common-card-bg: #7075F4;
+  --col-gotchi-common-card-inner-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 0px 14px 3px #5E1FE4;
+
+  --col-gotchi-uncommon-300: #6ab8fc;
+  --col-gotchi-uncommon-400: #48abff;
+  --col-gotchi-uncommon-500: #319fff;
+  --col-gotchi-uncommon-card-border: #05C6F0;
+  --col-gotchi-uncommon-card-label-bg: #0955AD;
+  --col-gotchi-uncommon-card-bg: #2496FF;
+  --col-gotchi-uncommon-card-inner-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 0px 14px 3px rgba(7, 44, 238, 0.67);
+  
+  --col-gotchi-rare-300: #f643f0;
+  --col-gotchi-rare-400: #c82ac2;
+  --col-gotchi-rare-500: #a712a1;
+  --col-gotchi-rare-card-border: #F31CED;
+  --col-gotchi-rare-card-label-bg: #C82AC2;
+  --col-gotchi-rare-card-bg: #8940B6;
+  --col-gotchi-rare-card-inner-shadow: 0px 3.85075px 3.85075px rgba(0, 0, 0, 0.25), inset 0px 0px 14.4403px 2.88806px rgba(115, 0, 143, 0.7);
+
+  --col-gotchi-legendary-300: #00f470;
+  --col-gotchi-legendary-400: #51ffa8;
+  --col-gotchi-legendary-500: #00bf58;
+  --col-gotchi-legendary-card-border: #00EF8B;
+  --col-gotchi-legendary-card-label-bg: #05BA4E;
+  --col-gotchi-legendary-card-bg: #00763E;
+  --col-gotchi-legendary-card-inner-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 0px 14px 3px rgba(0, 95, 9, 0.7);
+
+  --col-gotchi-freebie-card-border: #FFCF26;
+  --col-gotchi-freebie-card-label-bg: #E3A810;
+  --col-gotchi-freebie-card-bg: #D38D04;
+  --col-gotchi-freebie-card-inner-shadow: 0px 3.85075px 3.85075px rgba(0, 0, 0, 0.25), inset 0px 0px 14.4403px 2.88806px rgba(125, 75, 0, 0.7);
+  
+  --col-gotchi-disabled-400: #9fa3ff;
+  --col-gotchi-disabled-500: #868bff;
+
+  --col-text-fud: #77f552;
+  --col-text-fomo: #ff954e;
+  --col-text-alpha: #bfffff;
+  --col-text-kek: #eebeff;
+
+  --col-text-fud-bold: #298356;
+  --col-text-fomo-bold: #ec410e;
+  --col-text-alpha-bold: #0075a7;
+  --col-text-kek-bold: #8f17f9;
+
+  --col-text-fud-2: #0ad869;
+  --col-text-fomo-2: #ff8900;
+  --col-text-alpha-2: #3ec5ff;
+  --col-text-kek-2: #c957ff;
+
+  --col-btn-disabled: rgba(16, 16, 16, 0.3);
+  --col-quickslot-item-bg: rgba(29, 23, 63, 0.9);
+  --col-quickslot-item-category-bg: rgba(74, 24, 186, 0.6);
+  
+  --col-scanline: rgba(0, 185, 225, 0.12);
+
+  --col-grad-magenta: linear-gradient(180deg, rgba(229, 47, 223, 0.2205) 22.92%, rgba(229, 47, 223, 0.45) 82.74%);
+  --col-grad-magenta-2: linear-gradient(270deg, rgba(200, 42, 194, 0.105) 36.97%, rgba(200, 42, 194, 0.425) 100%);
+  --col-grad-magenta-3: linear-gradient(90deg, rgba(255, 61, 224, 0.6) 11.69%, rgba(118, 8, 250, 0.6) 59.4%);
+  --col-grad-info: linear-gradient(180deg, rgba(129, 152, 188, 0.3) 7.46%, #99b0d5 40.14%, #4b5a72 69.18%, rgba(112, 169, 255, 0) 92.1%);
+  --col-grad-info-2: linear-gradient(90deg, rgba(51, 133, 255, 0.6) 11.69%, rgba(118, 8, 250, 0.6) 100.02%), rgba(0, 0, 0, 0.9);
+  --col-grad-purple: linear-gradient(to bottom, var(--col-purple-900) 0%, var(--col-purple-900) 70%, var(--col-purple-750) 70%, var(--col-purple-750) 100%);
+
+  --shadow-magenta-glow: 0px 0px 5px #c82ac2, 0px 0px 5px #c82ac2;
+  --shadow-magenta-glow-selected: 0px 0px 5px #dd2c26, 0px 0px 5px #00b9e1;
+  --shadow-cyan-glow: 0px 0px 5px #00b9e1, 0px 0px 5px #00b9e1;
+  --shadow-purple-glow: 0px 0px 5px #8348ff, 0px 0px 5px #8348ff;
+  --shadow-pocket: 0px 2px 50px rgba(0, 0, 0, 0.7);
+  --shadow-pink-rubber: 0px 0px 2px rgba(0, 0, 0, 0.35), 2px 4px 6px #000000;
+  --shadow-pink-bubble: 0px 0px 8px #c82ac2, 0px 0px 8px #c82ac2;
+  --shadow-gotchi: 0px -3px 38px rgba(0, 0, 0, 0.3);
+  --shadow-items: 0px 3px 19px rgba(0, 0, 0, 0.6);
+  --shadow-cant-equip: 0px 2px 6px #ee0000, 0px 0px 6px #ee0000, 0px 2px 6px #ee0000, 0px -2px 6px #ee0000, 0px 1px 6px #ee0000;
+  --shadow-small: 0px 3px 3px rgba(0, 0, 0, 0.6);
+  --shadow-text: 0px -2px 4px #000000, 0px 2px 4px #000000;
+  --shadow-popup: 0px -4px 40px rgba(17, 0, 38, 0.85);
+  --shadow-nakey: 0px 0px 6.59322px #c82ac2, 0px 0px 6.59322px #c82ac2;
+  --shadow-wallet-connect-button: 0 0 .8rem 2px #8348ff;
+  --shadow-panel-title: 0px 0px 4.6875px #00b9e1, 0px 0px 4.6875px #00b9e1;
+}

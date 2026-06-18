@@ -1,0 +1,14 @@
+{ "columns":3,
+ "image":"saacred_root_verses.png",
+ "imageheight":1280,
+ "imagewidth":2112,
+ "margin":0,
+ "name":"saacred_root_verses",
+ "spacing":0,
+ "tilecount":12,
+ "tiledversion":"1.9.1",
+ "tileheight":320,
+ "tilewidth":704,
+ "type":"tileset",
+ "version":"1.8"
+}

@@ -1,0 +1,79 @@
+{ "columns":4,
+ "image":"NFT_8x12_basic.png",
+ "imageheight":2304,
+ "imagewidth":2048,
+ "margin":0,
+ "name":"NFT_8x12_basic",
+ "spacing":0,
+ "tilecount":12,
+ "tiledversion":"1.9.1",
+ "tileheight":768,
+ "tiles":[
+        {
+         "animation":[
+                {
+                 "duration":200,
+                 "tileid":0
+                }, 
+                {
+                 "duration":200,
+                 "tileid":1
+                }, 
+                {
+                 "duration":200,
+                 "tileid":2
+                }, 
+                {
+                 "duration":200,
+                 "tileid":3
+                }, 
+                {
+                 "duration":200,
+                 "tileid":4
+                }, 
+                {
+                 "duration":200,
+                 "tileid":5
+                }, 
+                {
+                 "duration":200,
+                 "tileid":6
+                }, 
+                {
+                 "duration":200,
+                 "tileid":7
+                }, 
+                {
+                 "duration":200,
+                 "tileid":8
+                }, 
+                {
+                 "duration":200,
+                 "tileid":9
+                }, 
+                {
+                 "duration":200,
+                 "tileid":10
+                }, 
+                {
+                 "duration":200,
+                 "tileid":11
+                }],
+         "id":0
+        }],
+ "tilewidth":512,
+ "offset":{
+       "x": 0,
+       "y": 0
+    },
+    "nftOffset":{
+       "x": 28,
+       "y": 27
+},
+"nftFrame":{
+       "width": 456,
+       "height": 712
+},
+ "type":"tileset",
+ "version":"1.8"
+}

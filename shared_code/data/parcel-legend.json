@@ -1,0 +1,86 @@
+[
+    {
+      "id": 1,
+      "type": "humble",
+      "typeId":"H",
+      "use": "Auction"
+    },
+    {
+      "id": 2,
+      "type": "humble",
+      "typeId":"H",
+      "use": "void"
+    },
+    {
+      "id": 3,
+      "type": "humble",
+      "typeId":"H",
+      "use": "Raffle"
+    },
+    {
+      "id": 4,
+      "type": "reasonable",
+      "typeId":"R",
+      "use": "Auction"
+    },
+    {
+      "id": 5,
+      "type": "reasonable",
+      "typeId":"R",
+      "use": "void"
+    },
+    {
+      "id": 6,
+      "type": "reasonable",
+      "typeId":"R",
+      "use": "Raffle"
+    },
+   
+    {
+      "id": 7,
+      "type": "spacious",
+      "typeId":"S",
+      "use": "Auction"
+    },
+   
+    {
+      "id": 8,
+      "type": "spacious",
+      "typeId":"S",
+      "use": "void"
+    }
+   ,
+    {
+      "id": 9,
+      "type": "spacious",
+      "typeId":"S",
+      "use": "Raffle"
+    }
+   ,
+    {
+      "id": 10,
+      "type": "paarthenr",
+      "typeId":"P",
+      "use": "Auction"
+    }
+   ,
+    {
+      "id": 11,
+      "type": "alpha"
+    }
+   ,
+    {
+      "id": 12,
+      "type": "fud"
+    }
+   ,
+    {
+      "id": 13,
+      "type": "fomo"
+    }
+   ,
+    {
+      "id": 14,
+      "type": "kek"
+    }
+]

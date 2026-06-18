@@ -1,0 +1,168 @@
+{
+  "1": {
+    "itemTypeId": 1,
+    "type": "potion",
+    "category": "boosts",
+    "cooldownCategory": "hp",
+    "label": "HP Potion",
+    "description": "+2500 HP Potion",
+    "propDescription": {
+      "hp": "+2500 HP Potion"
+    },
+    "cost": {
+      "KEK": 10
+    },
+    "purchasable": true,
+    "enabled": true,
+    "inventory": {
+      "quickslot": true,
+      "weight": 1
+    },
+    "actions": ["use", "drop"],
+    "actionsMetadata": {
+      "use": [
+        {
+          "command": "regeneratePlayerStat",
+          "config": {
+            "attribute": "health",
+            "check": { "attribute": "maxHealth", "triggerLimit": 1 },
+            "amount": 2500,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    "dimensions": {
+      "width": 16,
+      "height": 16
+    },
+    "supplyConfig": {
+      "initialQuantityAvailable": 10,
+      "maxQuantityAvailable": 99,
+      "autoRestockCron": "* * * * *",
+      "autoRestockAmount": 1
+    }
+  },
+  "2": {
+    "itemTypeId": 2,
+    "type": "potion",
+    "category": "boosts",
+    "cooldownCategory": "ap",
+    "label": "AP Potion",
+    "description": "+250 AP Potion",
+    "propDescription": {
+      "ap": "+250 AP Potion"
+    },
+    "cost": {
+      "ALPHA": 20
+    },
+    "purchasable": true,
+    "enabled": true,
+    "inventory": {
+      "quickslot": true,
+      "weight": 1
+    },
+    "actions": ["use", "drop"],
+    "actionsMetadata": {
+      "use": [
+        {
+          "command": "regeneratePlayerStat",
+          "config": {
+            "attribute": "ap",
+            "check": { "attribute": "maxAP", "triggerLimit": 1 },
+            "amount": 250,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    "dimensions": {
+      "width": 16,
+      "height": 16
+    },
+    "supplyConfig": {
+      "initialQuantityAvailable": 10,
+      "maxQuantityAvailable": 99,
+      "autoRestockCron": "* * * * *",
+      "autoRestockAmount": 1
+    }
+  },
+  "3": {
+    "itemTypeId": 3,
+    "type": "GMLS",
+    "category": "enemy",
+    "cooldownCategory": "enemy",
+    "label": "ProtoLick 1",
+    "labelTooltip": "Protolick Model 1",
+    "description": "Autonomous sentry unit designed to protect its area!",
+    "propDescription": {
+      "lifespan": "LIFESPAN",
+      "hp": "MAX_HP",
+      "attack": "ACTIONS.ATTACK.DAMAGE_MULT"
+    },
+    "cost": {
+      "FUD": 60,
+      "FOMO": 20
+    },
+    "purchasable": true,
+    "enabled": true,
+    "inventory": {
+      "quickslot": true,
+      "weight": 1
+    },
+    "actions": ["use"],
+    "actionsMetadata": {
+      "use": [
+        {
+          "command": "create"
+        }
+      ]
+    },
+    "supplyConfig": {
+      "initialQuantityAvailable": 10,
+      "maxQuantityAvailable": 99,
+      "autoRestockCron": "* * * * *",
+      "autoRestockAmount": 1
+    }
+  },
+  "4": {
+    "itemTypeId": 4,
+    "type": "PLM2",
+    "category": "enemy",
+    "cooldownCategory": "enemy",
+    "label": "ProtoLick 2",
+    "labelTooltip": "Protolick Model 2",
+    "description": "Advanced autonomous sentry unit designed to protect and pursue!",
+    "propDescription": {
+      "lifespan": "LIFESPAN",
+      "hp": "MAX_HP",
+      "attack": "ACTIONS.ATTACK.DAMAGE_MULT"
+    },
+    "cost": {
+      "FUD": 1000,
+      "FOMO": 150,
+      "ALPHA": 100,
+      "KEK": 15
+    },
+    "purchasable": true,
+    "enabled": true,
+    "inventory": {
+      "quickslot": true,
+      "weight": 1
+    },
+    "actions": ["use"],
+    "actionsMetadata": {
+      "use": [
+        {
+          "command": "create"
+        }
+      ]
+    },
+    "supplyConfig": {
+      "initialQuantityAvailable": 10,
+      "maxQuantityAvailable": 99,
+      "autoRestockCron": "* * * * *",
+      "autoRestockAmount": 1
+    }
+  }
+}

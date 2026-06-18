@@ -1,0 +1,98 @@
+{"root":[
+	{
+		"id":0,
+		"releaseId":1,
+		"text":"Mark well the words of the ancient tree;\nI see what was and, too, what might be.\nI helped Aadepts many moons ago.\nIf you’re wise, you shall heed what I know.\nI spoke once of Great Battles you’d face.\n",
+		"hint":"Reasonable owners between Districts 11 & 12 are complaining of a large unidentified structure growing out of the ground.",
+		"district":"12",
+		"position":{"x":6258,"y":5251}
+	},
+	{
+		"id":1,
+		"releaseId":2,
+		"text":"Hungry eyes lusting for your city.\nCountless long legs shall break down your door,\nWhile drooling mouths consume evermore.\nKnow that your efforts shall be in vain,",
+		"hint":"Spacious owners are up in arms about what they describe as an inedible obstruction in their backyard. Districts 29 & 30 reporting.",
+		"district":"30",
+		"position":{"x":8260,"y":4403}
+	},
+	{
+		"id":2,
+		"releaseId":3,
+		"text":"The sky will fill with fierce protection.\nYet that does not ensure survival. \nKeep a wary eye on your rival. \nTo know when damage is to be dealt,",
+		"hint":"Northern District 1 Portal Mage scouts have retrieved samples they are refering to as \"Saacred.\"",
+		"district":"1b",
+		"position":{"x":4443,"y":2136}
+	},
+	{
+		"id":3,
+		"releaseId":4,
+		"text":"With each day, we near the time and place.\nI wish to survive the coming Nine,\nAnd so, your success shall, too, be mine.\nNow, I’ll warn you from the very start:\n",
+		"hint":"Humble owners between Districts 2 and 3 speak of another large root growth. Babbling sounds heard occasionally.",
+		"district":"3",
+		"position":{"x":2441,"y":2359}
+	},
+	{
+		"id":4,
+		"releaseId":5,
+		"text":"If you do not continue to train.\nFor the Aarena can help you wield\nA pitchfork, ax, katana, and shield.\nWhile it’s tempting to be fast and bold,",
+		"hint":"More reports from Citaadel Guards manning the walls about what they are refering to as an \"Enormous Root\" somewhere between Districts 7, 23, & 24.",
+		"district":"24",
+		"position":{"x":5434,"y":68}
+	},
+	{
+		"id":5,
+		"releaseId":6,
+		"text":"You have to go where the bluebirds belt.\nThere, you’ll find information you lack\nOn when foes will be on the attack.\nAs time goes on and hearts grow weary,",
+		"hint":"Garden staff between Districts 20-22 are concerned about a mysterious tree that seems to have fallen, where no tree had previously existed!",
+		"district":"21",
+		"position":{"x":2476,"y":238}
+	},
+	{
+		"id":6,
+		"releaseId":7,
+		"text":"This war is not for the weak of heart.\nYou cannot truly fathom the cost\n‘Til what you love is already lost.\nGreat Battles shall be waged far and wide,",
+		"hint":"Eye sore reported by Reasonable owners between Districts 1c, 1d, & 9! Neighbors close by speak of euphoric sensations.",
+		"district":"9",
+		"position":{"x":6576,"y":2370}
+	},
+	{
+		"id":7,
+		"releaseId":8,
+		"text":"Fortune favors those who learn to hold.\nYes, your odds shall forever be changed,\nIf you master skills melee and ranged.\nAnd a structure that’s long been concealed",
+		"hint":"Western Citaadel Guards have spotted another Enormous Root near the walls between Districts 39-41.",
+		"district":"40",
+		"position":{"x":65,"y":3986}
+	},
+	{
+		"id":8,
+		"releaseId":9,
+		"text":"Trust one day you’ll answer the query:\n“Can anyone really change a thing, \nOr are we all puppets on a string?”\nNow, no more words! And no distractions!",
+		"hint":"Sightings in Districts 8, 9, 27, & 28 of what some refer to as a \"Saacred Root\" are reported!",
+		"district":"28",
+		"position":{"x":8248,"y":2991}
+	},
+	{
+		"id":9,
+		"releaseId":10,
+		"text":"Scorching our dear realm on ev’ry side. \nThese Battles may come in any form,\nEven as carnage becomes the norm.\nFor your enemies show no pity,",
+		"hint":"Citaadel Guards have spotted more Enormous Roots near the outer walls between Districts 19, 20, 42, & 43.",
+		"district":"43",
+		"position":{"x":792,"y":74}
+	},
+	{
+		"id":10,
+		"releaseId":11,
+		"text":"Is nearly ready to be revealed.\nJust know that it will be worth the wait,\nFor what is coming is truly Great:\nThe day gotchis form a connection,",
+		"hint":"Middle wall patrols have identified another Enormous Root! Reports indicate it is somewhere near the southwest. in Districts 2, 3, 15, & 16.",
+		"district":"15",
+		"position":{"x":2900,"y":4768}
+	},
+	{
+		"id":11,
+		"releaseId":12,
+		"text":"Time is short, so ready your actions!\nAnd as the First of Nine soon comes true,\nRemember this, whatever you do:\nIf you truly hope to one day thrive,\nYou best keep this Tree of FUD alive.",
+		"hint":"Southern District 1 Portal Mages have retrieved what just might be the final sample of the \"Saacred Roots.\"",
+		"district":"1e",
+		"position":{"x":5017,"y":3944}
+	}
+]}

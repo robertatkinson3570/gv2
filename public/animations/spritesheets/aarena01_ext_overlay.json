@@ -1,0 +1,18 @@
+{ "columns":3,
+ "image":"aarena01_ext_overlay.png",
+ "imageheight":64,
+ "imagewidth":192,
+ "leftOffset":{
+    "x": -320,
+    "y": 192
+ },
+ "margin":0,
+ "name":"aarena01_ext_overlay",
+ "spacing":0,
+ "tilecount":3,
+ "tiledversion":"1.9.1",
+ "tileheight":64,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":"1.8"
+}

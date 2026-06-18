@@ -1,0 +1,16 @@
+{ "columns":9,
+ "image":"waall.png",
+ "imageheight":392,
+ "imagewidth":1152,
+ "margin":0,
+ "name":"waall",
+ "spacing":0,
+ "tilecount":18,
+ "tiledversion":"1.7.0",
+ "tileheight":196,
+ "tilewidth":128,
+ "type":"tileset",
+ "version":"1.6",
+ "originX": 0,
+ "originY": 0.5
+}

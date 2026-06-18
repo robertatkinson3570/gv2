@@ -1,0 +1,450 @@
+@tailwind base;
+@tailwind components;
+
+@font-face {
+  font-family: 'Pixelar';
+  src: url('/fonts/Pixelar Regular.woff2');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Bk';
+  src: url('/fonts/subset-KimberleyBk-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Bk';
+  src: url('/fonts/subset-KimberleyBk-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Bl';
+  src: url('/fonts/subset-KimberleyBl-Italic.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley El';
+  src: url('/fonts/subset-KimberleyEl-Italic.woff') format('woff');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley El';
+  src: url('/fonts/subset-KimberleyEl-Regular.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Lt';
+  src: url('/fonts/subset-KimberleyLt-Regular.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Bl';
+  src: url('/fonts/subset-KimberleyBl-Regular.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Lt';
+  src: url('/fonts/subset-KimberleyLt-Italic.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Rg';
+  src: url('/fonts/subset-KimberleyRg-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Rg';
+  src: url('/fonts/subset-KimberleyRg-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Ul';
+  src: url('/fonts/subset-KimberleyUl-Regular.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Rg';
+  src: url('/fonts/subset-KimberleyRg-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Ul';
+  src: url('/fonts/subset-KimberleyUl-Italic.woff') format('woff');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kimberley Rg';
+  src: url('/fonts/subset-KimberleyRg-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'Alien Encounters';
+  src: url('/fonts/Alien-Encounters-Regular.ttf');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alien Encounters Solid';
+  src: url('/fonts/Alien-Encounters-Solid-Regular.ttf');
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+  cursor: url('/cursors/default.png'), auto;
+  font-size: 10px;
+}
+
+canvas {
+  overflow: hidden;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+
+@media screen and (max-width: 991px) {
+  .mobile-hide {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 1400px) , screen and (max-height: 900px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-width: 1200px), screen and (max-height: 750px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+
+.clickable,
+a,
+button:not(:disabled),
+input[type='submit'],
+input[type='button'],
+input[type='reset'],
+input[type='file'],
+input[type='checkbox'],
+input[type='radio'] {
+  cursor: url('/cursors/pointer.png'), pointer;	
+}
+.not-clickable,
+button:disabled,
+input:disabled[type='submit'],
+input:disabled[type='button'],
+input:disabled[type='reset'],
+input:disabled[type='file'],
+input:disabled[type='checkbox'],
+input:disabled[type='radio'] {
+  cursor: url('/cursors/default.png'), auto;
+}
+
+body {
+  font-family: Pixelar;
+  background: #200543;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+}
+
+button:focus {
+  outline: none;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.centered {
+  align-items: center;
+  justify-content: center;
+}
+p {
+  font-size: 2rem;
+}
+
+.before::before { 
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+}
+
+button.clear {
+  background: none;
+  border:none;
+  padding: none;
+  margin: 0;
+}
+
+.scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 1.8rem;
+}
+
+.scrollable.hidden {
+  padding: 0;
+}
+
+.scrollable.hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 10px;
+  /* width: 12px; */
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 25%, #645969 25%, #645969 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0) 100%);
+  box-shadow: inset 1px 0 2px 2px rgb(0, 0, 0, 0.4);
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(200, 42, 194, 0) 0%, rgba(200, 42, 194, 0.7) 30%, var(--col-pink-400) 30%, var(--col-pink-400) 70%, rgba(200, 42, 194, 0.7) 70%, rgba(200, 42, 194, 0) 100%);
+  /* box-shadow: inset 0 0 2px 2px rgba(200, 42, 194, 0.3); */
+}
+
+.scrollable.secondary::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(131, 72, 255, 0) 0%, rgba(131, 72, 255, 0.7) 30%, var(--col-purple-400) 30%, var(--col-purple-400) 70%, rgba(131, 72, 255, 0.7) 70%, rgba(131, 72, 255, 0) 100%);
+  /* box-shadow: inset 0 0 3px 3px rgba(131, 72, 255, 0.3); */
+  /*background: var(--col-purple-400);*/
+  /*box-shadow: 0 0 4px 1px var(--col-purple-border);*/
+}
+
+.scrollable.info::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(0, 185, 225, 0) 0%, rgba(0, 185, 225, 0.7) 30%, var(--col-info-400) 30%, var(--col-info-400) 70%, rgba(0, 185, 225, 0.7) 70%, rgba(0, 185, 225, 0) 100%);
+  /* box-shadow: inset 0 0 3px 3px rgba(0, 185, 225, 0.3); */
+  /*background: var(--col-info-400);*/
+  /*box-shadow: 0 0 .8rem .1rem var(--col-purple-border);*/
+}
+
+.scrollable.halloween::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(231, 94, 17, 0) 0%, rgba(231, 94, 17, 0.7) 30%, var(--col-halloween-400) 30%, var(--col-halloween-400) 70%, rgba(231, 94, 17, 0.7) 70%, rgba(231, 94, 17, 0) 100%);
+}
+
+.scrollable-container.shadowed:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 95%;
+  height: 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+}
+
+.gradient-purple {
+  background: linear-gradient(90deg, rgba(35, 14, 79, 1) 0%, rgba(35, 14, 79, 0.8) 50%, rgba(35, 14, 79, 0.9) 100%),
+  linear-gradient(rgba(244, 113, 255, 0.52) 0%, rgba(244, 113, 255, 0.52) 20%, transparent 20%, transparent 100%);
+  background-size: 100% 0.8rem;
+}
+
+.gradient-purple-simple {
+  background: rgba(35, 14, 79, 1);
+  position: relative;
+}
+.gradient-purple-simple:before {
+  content:'';
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+
+  background: linear-gradient(rgba(241, 230, 242, 0.05) 0%, rgba(241, 230, 242, 0.05)  20%, transparent 20%, transparent 100%);
+  background-size: 100% .7rem;
+}
+
+
+.flex-c-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-c-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+.scrollable.slim::-webkit-scrollbar{
+  width: 2px;
+}
+.scrollable.slim {
+  padding-right: 1.2rem;
+}
+.scrollable.slim-v::-webkit-scrollbar {
+
+  padding: 1rem;
+  height: 2px;
+}
+.scrollable.slim-v{
+padding-bottom: .5rem;
+}
+
+.absolute-centered {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+
+
+.warning {
+  color: var(--col-warning-400);
+}
+
+.info {
+  color: var(--col-info-400);
+}
+
+.success {
+  color: var(--col-success-400);
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.title {
+  font-size: 2em;
+}
+
+
+.fade-gradient {
+  background: linear-gradient(to top, rgba(0, 185, 225, 0.4), rgba(0, 185, 225, 0));
+  border-bottom: .2rem solid var(--col-info-400);
+  border-image: radial-gradient(50% 2354449.91% at 50% 99.92%, #00b9e1 0%, rgba(0, 185, 225, 0.4) 100%) 1;
+}
+
+.fade-gradient.left {
+  background: linear-gradient(-90deg, rgba(0, 185, 225, 0) 22.92%, rgba(0, 185, 225, 0.2) 100%);
+  border:none;
+}
+
+input[type=number] {
+  appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.Toastify__toast {
+  font-family: Pixelar;
+  font-size: 2.1rem;
+  line-height: 120%;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  background-color:rgba(0, 0, 0, 0.7);
+  white-space: pre-line;
+  /* uncomment if we want a toast that more closely mirrors the design of other elements
+  background-color:rgba(40, 3, 70, 0.65);
+  border: .3rem solid rgba(184, 57, 188, 1);
+  border-radius: .3rem;
+  box-shadow: .0rem .0rem 1.0rem .3rem rgba(184, 57, 188, 1);
+  */
+}
+.wideToast {
+  width: 480px;
+  /* default toast is hard-coded to 320px so we subtract the difference from margin */
+  margin-left: -80px;
+}
+
+.grecaptcha-badge { visibility: hidden; }
+
+.x-flip {
+  transform: scaleX(-1);
+}
+
+.hexagon {
+  clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+}
+
+.box-inset-shadow {
+  box-shadow: inset 0px 1px 3px 4px rgba(0, 0, 0, 0.6);
+}
+
+@tailwind utilities;

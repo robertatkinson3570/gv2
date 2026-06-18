@@ -1,0 +1,20 @@
+FROM node:14.18.2
+
+USER node
+
+ENV APP_ENV=alpha
+ENV NODE_ENV=development
+
+EXPOSE 3001
+
+WORKDIR /home/node
+
+COPY ["package.json", "./"]
+COPY ["yarn.lock", "./"]
+
+RUN yarn
+
+COPY . .
+
+CMD yarn docker:${APP_ENV}
+

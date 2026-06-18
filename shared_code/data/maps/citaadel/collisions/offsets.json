@@ -1,0 +1,90 @@
+{
+	"wall-horizontal": {
+		"topHeight" :220,
+		"bottomHeight" :90,
+		"offsetTop" :45,
+		"offsetBottom" :178,
+		"left":{
+			"tower1":2,
+			"tower2":3,
+			"tower3":6,
+			"tower4":6,
+			"none":0
+		},
+		"right":{
+			"tower1":2,
+			"tower2":2,
+			"tower3":4,
+			"tower4":3,
+			"none":0
+		}
+	},
+	"wall-vertical": {
+		"vWallWidth" :180,
+		"leftOffset" :39,
+		"rightOffset" :192,
+		"top":{
+			"tower1":3,
+			"tower2":3,
+			"tower3":6,
+			"tower4":5,
+			"none":0
+			
+		},
+		"bottom":{
+			"tower1":1,
+			"tower2":1,
+			"tower3":2,
+			"tower4":3,
+			"none":0
+		}
+	},
+	"tower1": {
+		"width":256,
+		"height":410,
+		"level2Width":264,
+		"level2Height":288,
+		"southX":128,
+		"southY":120,
+		"noSouthX":128,
+		"noSouthY":96,
+		"level2X":128,
+		"level2Y":32,
+		"top":[40,86,128,86],
+		"left": [224,280,224,168],
+		"wallTop":[-64,224,448,224],
+		"wallLeft":[224,448,224,0]
+	},
+	"tower2": {
+		"width":426,
+		"height":540,
+		"southX":105,
+		"southY":74,
+		"level2Width":640,
+		"level2Height":576,
+		"level2X":0,
+		"level2Y":0,
+		"noSouthX":105,
+		"noSouthY":74
+	},
+	"tower3": {
+		"width":587,
+		"height":820,
+		"southX":152,
+		"southY":140,
+		"level2Width":894,
+		"level2Height":640,
+		"level2X":0,
+		"level2Y":-20,
+		"noSouthX":152,
+		"noSouthY":100
+	},
+	"tower4": {
+		"width":640,
+		"height":958,
+		"southX":70,
+		"southY":120,
+		"noSouthX":70,
+		"noSouthY":120
+	}
+}

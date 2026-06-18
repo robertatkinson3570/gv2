@@ -1,0 +1,154 @@
+{
+       "columns": 3,
+       "image": "aarena01_ext_south.png",
+       "imageheight": 768,
+       "imagewidth": 1728,
+       "margin": 0,
+       "leftOffset": {
+         "x": -192,
+         "y": 192
+       },
+       "name": "aarena01_ext_south",
+       "spacing": 0,
+       "tilecount": 12,
+       "tiledversion": "1.9.1",
+       "tileheight": 192,
+       "tiles": [
+         {
+           "animation": [
+             {
+               "duration": 150,
+               "tileid": 0
+             },
+             {
+               "duration": 140,
+               "tileid": 1
+             },
+             {
+               "duration": 130,
+               "tileid": 2
+             },
+             {
+               "duration": 130,
+               "tileid": 3
+             },
+             {
+               "duration": 130,
+               "tileid": 4
+             },
+             {
+               "duration": 130,
+               "tileid": 5
+             },
+             {
+               "duration": 130,
+               "tileid": 6
+             },
+             {
+               "duration": 130,
+               "tileid": 7
+             },
+             {
+               "duration": 130,
+               "tileid": 8
+             },
+             {
+               "duration": 130,
+               "tileid": 9
+             },
+             {
+               "duration": 130,
+               "tileid": 10
+             },
+             {
+               "duration": 5000,
+               "tileid": 11
+             }
+           ],
+           "id": 0
+         },
+         {
+           "animation": [
+             {
+               "duration": 130,
+               "tileid": 0
+             }
+           ],
+           "id": 1
+         },
+         {
+           "animation": [
+             {
+               "duration": 130,
+               "tileid": 11
+             },
+             {
+               "duration": 130,
+               "tileid": 10
+             },
+             {
+               "duration": 130,
+               "tileid": 9
+             },
+             {
+               "duration": 130,
+               "tileid": 8
+             },
+             {
+               "duration": 130,
+               "tileid": 7
+             },
+             {
+               "duration": 130,
+               "tileid": 6
+             },
+             {
+               "duration": 130,
+               "tileid": 5
+             },
+             {
+               "duration": 130,
+               "tileid": 4
+             },
+             {
+               "duration": 130,
+               "tileid": 3
+             },
+             {
+               "duration": 130,
+               "tileid": 2
+             },
+             {
+               "duration": 130,
+               "tileid": 1
+             },
+             {
+               "duration": 90,
+               "tileid": 0
+             },
+             {
+               "duration": 110,
+               "tileid": 1
+             },
+             {
+               "duration": 5000,
+               "tileid": 0
+             }
+           ],
+           "id": 10
+         },
+         {
+           "animation": [
+             {
+               "duration": 100,
+               "tileid": 11
+             }
+           ],
+           "id": 11
+         }
+       ],
+       "tilewidth": 576,
+       "type": "tileset",
+       "version": "1.8"
+     }
+     

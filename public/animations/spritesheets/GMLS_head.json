@@ -1,0 +1,202 @@
+{
+  "columns": 21,
+  "image": "gmls_head.png",
+  "imageheight": 128,
+  "imagewidth": 2688,
+  "margin": 0,
+  "name": "gmls_head",
+  "spacing": 0,
+  "tilecount": 21,
+  "tiledversion": "1.9.1",
+  "tileheight": 128,
+  "listen": "gmls_main",
+  "leftOffset":{
+    "x": 64,
+    "y": -64
+	},
+  "tiles": [
+    {
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 0
+        }
+      ],
+      "id": 0
+    },
+    {
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 1
+        },
+        {
+          "duration": 100,
+          "tileid": 2
+        },
+        {
+          "duration": 100,
+          "tileid": 3
+        },
+        {
+          "duration": 100,
+          "tileid": 4
+        },
+        {
+          "duration": 100,
+          "tileid": 5
+        },
+        {
+          "duration": 100,
+          "tileid": 6
+        },
+        {
+          "duration": 100,
+          "tileid": 7
+        },
+        {
+          "duration": 100,
+          "tileid": 8
+        },
+        {
+          "duration": 100,
+          "tileid": 9
+        },
+        {
+          "duration": 100,
+          "tileid": 10
+        },
+        {
+          "duration": 100,
+          "tileid": 11
+        },
+        {
+          "duration": 100,
+          "tileid": 12
+        },
+        {
+          "duration": 100,
+          "tileid": 13
+        },
+        {
+          "duration": 100,
+          "tileid": 14
+        },
+        {
+          "duration": 100,
+          "tileid": 15
+        },
+        {
+          "duration": 100,
+          "tileid": 16
+        },
+        {
+          "duration": 100,
+          "tileid": 17
+        },
+        {
+          "duration": 100,
+          "tileid": 18
+        },
+        {
+          "duration": 100,
+          "tileid": 19
+        }
+      ],
+      "id": 1
+    },
+    {
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 19
+        },
+        {
+          "duration": 100,
+          "tileid": 18
+        },
+        {
+          "duration": 100,
+          "tileid": 17
+        },
+        {
+          "duration": 100,
+          "tileid": 16
+        },
+        {
+          "duration": 100,
+          "tileid": 15
+        },
+        {
+          "duration": 100,
+          "tileid": 14
+        },
+        {
+          "duration": 100,
+          "tileid": 13
+        },
+        {
+          "duration": 100,
+          "tileid": 12
+        },
+        {
+          "duration": 100,
+          "tileid": 11
+        },
+        {
+          "duration": 100,
+          "tileid": 10
+        },
+        {
+          "duration": 100,
+          "tileid": 9
+        },
+        {
+          "duration": 100,
+          "tileid": 8
+        },
+        {
+          "duration": 100,
+          "tileid": 7
+        },
+        {
+          "duration": 100,
+          "tileid": 6
+        },
+        {
+          "duration": 100,
+          "tileid": 5
+        },
+        {
+          "duration": 100,
+          "tileid": 4
+        },
+        {
+          "duration": 100,
+          "tileid": 3
+        },
+        {
+          "duration": 100,
+          "tileid": 2
+        },
+        {
+          "duration": 100,
+          "tileid": 1
+        }
+      ],
+      "id": 19
+    },
+    {
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 20
+        }
+      ],
+      "id": 20
+    }
+  ],
+  "tilewidth": 128,
+  "type": "tileset",
+  "version": "1.8"
+}

@@ -1,0 +1,22 @@
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+export default class MyDocument extends Document {
+  render() {
+    return (
+      <Html lang="en">
+        <Head />
+        <body className={process.env.NODE_ENV.startsWith('dev') ? 'debug-screens' : ''}>
+          <Main />
+          <div id="portal" />
+          <div id="portal-tooltip"></div>
+          <NextScript />
+          {process.env.APP_ENV === 'production' && <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>}
+          <noscript>
+            <img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" />
+          </noscript>
+          <script async defer src={'https://www.recaptcha.net/recaptcha/enterprise.js?render=' + process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}></script>
+        </body>
+      </Html>
+    );
+  }
+}

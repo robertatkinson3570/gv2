@@ -1,0 +1,20 @@
+{ "columns":3,
+ "image":"aaltar.png",
+ "imageheight":768,
+ "imagewidth":768,
+ "margin":0,
+ "name":"aaltar",
+ "spacing":0,
+ "tilecount":9,
+ "tiledversion":"1.7.0",
+ "tileheight":256,
+ "tilewidth":256,
+ "type":"tileset",
+ "version":"1.6",
+ "originX": 0.3,
+ "originY": 0.6,
+ "offset":{
+    "x": -64,
+    "y": -128
+ }
+}

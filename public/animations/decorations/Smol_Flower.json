@@ -1,0 +1,18 @@
+{ "columns":6,
+ "image":"dec_flower.png",
+ "imageheight":96,
+ "imagewidth":768,
+ "margin":0,
+ "name":"dec_flower",
+ "spacing":0,
+ "tilecount":6,
+ "tiledversion":"1.7.0",
+ "tileheight":96,
+ "tilewidth":128,
+ "type":"tileset",
+ "version":"1.6",
+ "offset":{
+    "x": -32,
+    "y": 0
+ }
+}

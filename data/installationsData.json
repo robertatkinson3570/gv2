@@ -1,0 +1,118 @@
+{
+    "0-LE": {
+      "offsets": [
+        [
+          { "key": "fud", "x": -15, "y": -32, "frame": 12 },
+          { "key": "fomo", "x": -5, "y": -28, "frame": 6 },
+          { "key": "alpha", "x": 5, "y": -28, "frame": 0 },
+          { "key": "kek", "x": 15, "y": -32, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -17, "y": -50, "frame": 12 },
+          { "key": "fomo", "x": -6, "y": -42, "frame": 6 },
+          { "key": "alpha", "x": 6, "y": -42, "frame": 0 },
+          { "key": "kek", "x": 17, "y": -50, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -20, "y": -65, "frame": 12 },
+          { "key": "fomo", "x": -6, "y": -57, "frame": 6 },
+          { "key": "alpha", "x": 6, "y": -57, "frame": 0 },
+          { "key": "kek", "x": 20, "y": -65, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -18, "y": -70, "frame": 12 },
+          { "key": "fomo", "x": -8, "y": -80, "frame": 6 },
+          { "key": "alpha", "x": 8, "y": -80, "frame": 0 },
+          { "key": "kek", "x": 18, "y": -70, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -19, "y": -80, "frame": 12 },
+          { "key": "fomo", "x": -7, "y": -95, "frame": 6 },
+          { "key": "alpha", "x": 7, "y": -95, "frame": 0 },
+          { "key": "kek", "x": 19, "y": -80, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -19, "y": -100, "frame": 12 },
+          { "key": "fomo", "x": -7, "y": -110, "frame": 6 },
+          { "key": "alpha", "x": 7, "y": -110, "frame": 0 },
+          { "key": "kek", "x": 19, "y": -100, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -45, "y": -125, "frame": 12 },
+          { "key": "fomo", "x": -15, "y": -125, "frame": 6 },
+          { "key": "alpha", "x": 15, "y": -125, "frame": 0 },
+          { "key": "kek", "x": 45, "y": -125, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -45, "y": -140, "frame": 12 },
+          { "key": "fomo", "x": -15, "y": -140, "frame": 6 },
+          { "key": "alpha", "x": 15, "y": -140, "frame": 0 },
+          { "key": "kek", "x": 45, "y": -140, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -45, "y": -155, "frame": 12 },
+          { "key": "fomo", "x": -15, "y": -155, "frame": 6 },
+          { "key": "alpha", "x": 15, "y": -155, "frame": 0 },
+          { "key": "kek", "x": 45, "y": -155, "frame": 18 }
+        ]
+      ]
+    },
+    "0": {
+      "offsets": [
+        [
+          { "key": "fud", "x": -11, "y": -45, "frame": 12 },
+          { "key": "fomo", "x": -5, "y": -35, "frame": 6 },
+          { "key": "alpha", "x": 5, "y": -35, "frame": 0 },
+          { "key": "kek", "x": 11, "y": -45, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -20, "y": -43, "frame": 12 },
+          { "key": "fomo", "x": -6, "y": -35, "frame": 6 },
+          { "key": "alpha", "x": 6, "y": -35, "frame": 0 },
+          { "key": "kek", "x": 20, "y": -43, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -22, "y": -40, "frame": 12 },
+          { "key": "fomo", "x": -8, "y": -32, "frame": 6 },
+          { "key": "alpha", "x": 8, "y": -32, "frame": 0 },
+          { "key": "kek", "x": 22, "y": -40, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -17, "y": -50, "frame": 12 },
+          { "key": "fomo", "x": -5, "y": -55, "frame": 6 },
+          { "key": "alpha", "x": 6, "y": -55, "frame": 0 },
+          { "key": "kek", "x": 17, "y": -50, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -21, "y": -55, "frame": 12 },
+          { "key": "fomo", "x": -7, "y": -65, "frame": 6 },
+          { "key": "alpha", "x": 7, "y": -65, "frame": 0 },
+          { "key": "kek", "x": 21, "y": -55, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -25, "y": -60, "frame": 12 },
+          { "key": "fomo", "x": -8, "y": -70, "frame": 6 },
+          { "key": "alpha", "x": 8, "y": -70, "frame": 0 },
+          { "key": "kek", "x": 25, "y": -60, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -34, "y": -70, "frame": 12 },
+          { "key": "fomo", "x": -11, "y": -70, "frame": 6 },
+          { "key": "alpha", "x": 11, "y": -70, "frame": 0 },
+          { "key": "kek", "x": 34, "y": -70, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -42, "y": -80, "frame": 12 },
+          { "key": "fomo", "x": -15, "y": -80, "frame": 6 },
+          { "key": "alpha", "x": 15, "y": -80, "frame": 0 },
+          { "key": "kek", "x": 42, "y": -80, "frame": 18 }
+        ],
+        [
+          { "key": "fud", "x": -52, "y": -95, "frame": 12 },
+          { "key": "fomo", "x": -17, "y": -95, "frame": 6 },
+          { "key": "alpha", "x": 17, "y": -95, "frame": 0 },
+          { "key": "kek", "x": 52, "y": -95, "frame": 18 }
+        ]
+      ]
+    }
+  }
