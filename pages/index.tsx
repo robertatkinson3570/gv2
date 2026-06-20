@@ -46,9 +46,9 @@ const IndexPage = () => {
   return (
     <>
       {/* <NotificationBar /> */}
-      {currentAccount && !web3Loading && ['kovan', 'matic', 'mumbai', 'localhost'].includes(currentNetwork) && <LandingScreen />}
+      {currentAccount && !web3Loading && ['base', 'localhost'].includes(currentNetwork) && <LandingScreen />}
 
-      {(!currentAccount || web3Loading || !['kovan', 'matic', 'mumbai', 'localhost'].includes(currentNetwork)) && <UnconnectedScreen />}
+      {(!currentAccount || web3Loading || !['base', 'localhost'].includes(currentNetwork)) && <UnconnectedScreen />}
     </>
   );
 };

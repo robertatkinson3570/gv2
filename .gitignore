@@ -49,3 +49,10 @@ yarn-error.log*
 
 # Sentry
 .sentryclirc
+
+# local agent + tooling (not part of the app)
+/.claude/
+/.playwright-mcp/
+
+# dev/QA screenshots
+/gv2-*.png

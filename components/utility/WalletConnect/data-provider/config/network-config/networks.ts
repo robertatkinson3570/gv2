@@ -76,6 +76,23 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       logo: PolygonLogo,
     },
   },
+  [ChainId.base]: {
+    name: 'Base',
+    publicJsonRPCUrl: ['https://mainnet.base.org'],
+    // Aave-specific providers are unused by Gotchiverse; placeholders satisfy the type.
+    addresses: {
+      walletBalanceProvider: '0x0000000000000000000000000000000000000000',
+      uiPoolDataProvider: '0x0000000000000000000000000000000000000000',
+    },
+    protocolDataUrl: '',
+    baseAsset: 'ETH',
+    rewardTokenSymbol: 'GHST',
+    rewardTokenDecimals: 18,
+    incentivePrecision: 18,
+    explorerLink: 'https://basescan.org',
+    rpcOnly: false,
+    isTestnet: false,
+  },
   [ChainId.mumbai]: {
     name: 'Mumbai',
     publicJsonRPCUrl: ['https://rpc-mumbai.maticvigil.com'],

@@ -7,6 +7,8 @@ interface SceneControllerInterface {
 
 function setScene(sceneObj: Scene) {
   scene = sceneObj;
+  // debug: expose the active scene for inspection
+  if (typeof window !== 'undefined') (window as any).__scene = sceneObj;
 }
 
 const SceneController: SceneControllerInterface = {

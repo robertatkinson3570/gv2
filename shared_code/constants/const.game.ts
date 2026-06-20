@@ -655,7 +655,7 @@ export const GAME_CONFIG: GameConfig = {
   playerScaling: true, // set to true to use latest players architecture where players are only added to the physics engine of their socket server
   allowConcurrentWalletGotchiLogins: false, // set to true to allow multiple gotchis under one wallet address to log in. Otherwise one per wallet.
   allowBotTesting: true, // set to true to allow 0x0000000000000000000000000000000000000000 owner connections without metamask signing for internal load testing
-  requireMetaMaskSign: true, // set to true to require a MetaMask Sign Request to log in to Realm including server validation (turning this off is unsafe, allows spoofing)
+  requireMetaMaskSign: false, // off for the local realm server — no auth backend to issue/validate the nonce + authToken (would otherwise sign an undefined nonce and crash Enter)
   useCustomLodash: true, // whether to use our custom "nodash" library in replacement of lodash for nice V8 performance gains!
   playTimeLimit: 0, // the amount of time a gotchi can play in one session before being kicked to open room for new players
   enablePlayerQueue: true, // if true, all socket connections are pub/sub to our single consumer server to centrally queue in the order they are received
@@ -663,7 +663,7 @@ export const GAME_CONFIG: GameConfig = {
   autoBanBots: true, // set to true to automatically kick and ban detected bots
   toggleMouseMovement: false,
   shadowBanIpCountryWhiteList: ['Philippines', 'Vietnam', 'Thailand', 'Morocco'], // what countries to not auto-shadow ban additional IPs owners log in against
-  enableRECAPTCHA: true, // set if reCaptcha is enabled or not
+  enableRECAPTCHA: false, // set if reCaptcha is enabled or not (off for local realm server — no enterprise key)
   enableJigger: false, // set if all rental addresses should be run through Jigger anti-bot detection as they log in and withdrawal alchemica
   recaptchaBotThreshold: 0.2, // the threshold score between 0-1 (inclusive) to take action: auto shadow ban and take pocket funds. The lmits on our Redis Enterprise currently only return 0.1, 0.3, 0.7 and 0.9
   forfeitAlchemicaOnShadowBan: true, // set to true to automatically forfeit pocket alchemica when a player gets shadow banned. Funds are auto-refundable on unban

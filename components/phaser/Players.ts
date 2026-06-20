@@ -788,13 +788,15 @@ function handleSprint(id: string, isSprinting: boolean, direction?: Vector2) {
       AnimationsController.play(sprintSprite, 'sprint');
       scene[id].add(sprintSprite);
     }
-    // current player
+    // current player — start the sprint sound once on sprint-start, not on every
+    // position frame. Re-firing fadeIn('sprint_intro') each frame overlaps the
+    // intro into a weird stuttering noise.
     if (isSelectedPlayer(id)) {
-      SFXController.fadeIn('sprint_intro');
-      SFXController.soundLoopPlay('sprint_loop');
-    } else {
-      // sprinting and not current player
-      // SFXController.setSpatialAudios({ id: id, key: 'sprint_loop', container: scene[id] }, true);
+      if (!scene[id].sprintSfxOn) {
+        scene[id].sprintSfxOn = true;
+        SFXController.fadeIn('sprint_intro');
+      }
+      SFXController.soundLoopPlay('sprint_loop'); // self-guards via loopTrack
     }
     // update with movement
   } else {
@@ -812,6 +814,7 @@ function disableSprint(id) {
     SFXController.fadeOut('sprint_outro');
     SFXController.soundLoopStop('sprint_loop');
   }
+  if (scene[id]) scene[id].sprintSfxOn = false; // re-arm the sprint-start sound
 }
 
 function updateSprintFX(id, direction: Vector2) {

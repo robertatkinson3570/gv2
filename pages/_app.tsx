@@ -25,6 +25,17 @@ const Initializer = () => {
   const [, settingsDispatch] = useSettings();
 
   useEffect(() => {
+    // TEMP diagnostic: surface the full stack of any uncaught error / promise
+    // rejection so we can pinpoint the Base enter crash (remove once fixed).
+    const logErr = (label: string) => (e: any) => {
+      // eslint-disable-next-line no-console
+      console.error(`[GLOBAL ${label}]`, e?.error?.stack || e?.reason?.stack || e?.reason || e?.message || e);
+    };
+    const onErr = logErr('ERROR');
+    const onRej = logErr('REJECTION');
+    window.addEventListener('error', onErr);
+    window.addEventListener('unhandledrejection', onRej);
+
     const initProps: Partial<GeneralStateInterface> = {};
     const vol = localStorage.getItem('volume');
     const lng = localStorage.getItem('language');

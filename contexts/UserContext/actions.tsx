@@ -215,9 +215,11 @@ export const fetchAndSetMaticBalance = async (
   web3Options: { provider: ethers.providers.Provider; network: NetworkNames; account: string },
   dispatch: React.Dispatch<Action>,
 ): Promise<void> => {
-  const maticContract = getContract(web3Options.network, web3Options.provider, 'maticAddress');
   try {
-    const balance = await maticContract.balanceOf(web3Options.account);
+    // Native gas-token balance (ETH on Base, MATIC on Polygon). Reading via the
+    // provider avoids the Polygon-only "native as ERC20" precompile, which has no
+    // contract on Base — balanceOf there reverts with CALL_EXCEPTION.
+    const balance = await web3Options.provider.getBalance(web3Options.account);
     const formattedBalance = Number(utils.formatEther(balance));
 
     dispatch({

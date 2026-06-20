@@ -4,7 +4,7 @@ import { Button, WalletConnectButton } from 'components/UI/elements';
 import { useWeb3 } from 'contexts/Web3Context';
 import { useUserWalletDataContext } from 'components/utility/WalletConnect';
 import Image from 'next/image';
-import { addPolygon } from 'helpers/ethers.helper';
+import { addBase } from 'helpers/ethers.helper';
 import styles from './styles';
 import { GotchiverseLogo, GotchiverseTitleHalloween } from 'assets';
 import GameController from 'components/controllers/GameController';
@@ -23,10 +23,10 @@ export const UnconnectedScreen = (): JSX.Element => {
     showSelectWalletModal(true);
   };
 
-  const connectToPolygon = async () => {
+  const connectToBase = async () => {
     // click();
-    handleNetworkChange(137);
-    void addPolygon();
+    handleNetworkChange(8453);
+    void addBase();
   };
   return (
     <>
@@ -47,10 +47,10 @@ export const UnconnectedScreen = (): JSX.Element => {
                       </Button>
                     </div>
                   )}
-                  {currentAccount && !['kovan', 'matic', 'rinkeby'].includes(currentNetwork || 'void') && (
+                  {currentAccount && !['base'].includes(currentNetwork || 'void') && (
                     <div className="connect-to-polygon">
-                      <Button size={3.2} onClick={connectToPolygon} color={gameConfig.gotchiverseTheme} secondary fullWidth>
-                        Connect to Polygon
+                      <Button size={3.2} onClick={connectToBase} color={gameConfig.gotchiverseTheme} secondary fullWidth>
+                        Connect to Base
                       </Button>
                     </div>
                   )}

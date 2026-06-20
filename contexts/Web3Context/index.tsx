@@ -47,7 +47,10 @@ const Web3Mapper = ({ children }: { children: React.ReactNode }): JSX.Element =>
         ethersSigner: provider?.getSigner(),
       });
 
-      const globalProvider = provider || new JsonRpcProvider('https://rpc.ankr.com/polygon');
+      // Fallback read provider before a wallet connects. Must be Base (not the
+      // old Polygon default) or token/alchemica balanceOf reads hit Polygon and
+      // return 0 for Base holdings — and getContract caches the first provider.
+      const globalProvider = provider || new JsonRpcProvider('https://mainnet.base.org');
       // console.log('globalProvider', globalProvider);
       // console.log('ethersSigner', provider?.getSigner());
 

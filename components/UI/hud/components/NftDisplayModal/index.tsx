@@ -101,7 +101,7 @@ export const NftDisplayModal = (): JSX.Element => {
       // console.log('@NFTDisplayModal:configData', configData);
       if (configData) setNFTConfig(configData);
 
-      const hasBaazaar = currentNetwork === 'matic' && configData.hasBaazaar;
+      const hasBaazaar = currentNetwork === 'base' && configData.hasBaazaar;
       setHasBaazaar(hasBaazaar);
       if (hasBaazaar) void fetchAndSetBaazaarListing(nftId);
     } else clearModal();

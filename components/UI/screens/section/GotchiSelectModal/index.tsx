@@ -187,7 +187,7 @@ export const GotchiSelectModal = ({ selectedSpawn, selectedGotchi, handleSpawnSe
     let ownedParcels = await fetchContractOwnedParcels(currentAccount, globalProvider, currentNetwork);
     _.map(ownedParcels, (parcel) => _.assign(parcel, { owner: currentAccount }));
 
-    if (isAavegotchiLent && currentNetwork === 'matic') {
+    if (isAavegotchiLent && currentNetwork === 'base') {
       lenderParcels = await fetchContractOwnedParcels(gotchi.originalOwner.id, globalProvider, currentNetwork);
       playerObject.originalOwner = gotchi.originalOwner.id;
       // Get permissions for parcels of lended gotchi
@@ -208,10 +208,18 @@ export const GotchiSelectModal = ({ selectedSpawn, selectedGotchi, handleSpawnSe
           lenderParcels.push(contractParcel);
         }
       }
-      const accessRights = await getParcelAccessRights(parcelIds, currentNetwork, globalProvider);
-      console.log('accessRights', accessRights);
-      const accessWhitelists = await getParcelsAccessRightsWhitelistIds(parcelIds, currentNetwork, globalProvider, true);
-      console.log('accessWhitelists', accessWhitelists);
+      // The Base realm diamond's access-rights views can revert / decode to
+      // undefined (unlike Polygon), which would throw uncaught and block entering
+      // entirely. They only gate borrowed-parcel actions (channel/equip) — not
+      // spawning and walking — so degrade gracefully instead of crashing entry.
+      let accessRights = [];
+      let accessWhitelists = [];
+      try {
+        accessRights = await getParcelAccessRights(parcelIds, currentNetwork, globalProvider);
+        accessWhitelists = (await getParcelsAccessRightsWhitelistIds(parcelIds, currentNetwork, globalProvider, true)) || [];
+      } catch (e) {
+        console.warn('Parcel access rights unavailable on Base (borrowed gotchi) — entering without them', e);
+      }
       _.map(lenderParcels, (parcel, i) =>
         _.assign(parcel, { owner: gotchi.originalOwner.id, accessRights: accessRights[i], accessWhitelists: accessWhitelists?.[i] }),
       );

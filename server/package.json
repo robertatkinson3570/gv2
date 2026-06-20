@@ -1,0 +1,17 @@
+{
+  "name": "gotchiverse-realm-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Minimal local realm server (Milestone 1: walk-around) for the gotchiverse-2d client. See docs/superpowers/specs/2026-06-20-gotchiverse-realm-server-walkaround-design.md",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ethers": "^6.17.0",
+    "ws": "^8.18.0"
+  }
+}

@@ -47,6 +47,35 @@ const maticVars = {
   gotchiLending: '0x86935F11C86623deC8a25696E1C19a8659CbF95d',
 };
 
+// Base (8453) — Aavegotchi post-Base migration. Addresses verified against the
+// gotchi-closet reference app (src/lib/lending/contracts.ts + alchemica.ts).
+const baseVars = {
+  // RPC (public endpoint; swap for a dedicated provider if rate-limited)
+  jsonRPC: 'https://mainnet.base.org',
+
+  // Tokens
+  ghstAddress: '0xcD2F22236DD9Dfe2356D7C543161D4d260FD9BcB', // GHST on Base
+  maticAddress: '0x0000000000000000000000000000000000000000', // no native ERC20 on Base (native = ETH); placeholder
+
+  // Diamonds
+  gbmDiamond: '0x80320A0000C7A6a34086E2ACAD6915Ff57FfDA31',
+  realmDiamond: '0x4B0040c3646D3c44B8a28Ad7055cfCF536c05372',
+  aavegotchiDiamond: '0xA99c4B08201F2913Db8D28e71d020c4298F29dBF',
+  installationDiamond: '0xebba5b725A2889f7f089a6cAE0246A32cad4E26b',
+  tileDiamond: '0x617fdB8093b309e4699107F48812b407A7c37938',
+  // ghstStaking (raffle tickets) not yet mapped on Base — Moralis gallery deferred.
+
+  fudAddress: '0x2028b4043e6722Ea164946c82fe806c4a43a0fF4',
+  fomoAddress: '0xA32137bfb57d2b6A9Fd2956Ba4B54741a6D54b58',
+  alphaAddress: '0x15e7CaC885e3730ce6389447BC0f7AC032f31947',
+  kekAddress: '0xE52b9170fF4ece4C35E796Ffd74B57Dec68Ca0e5',
+  gltrAddress: '0x4D140CE792bEdc430498c2d219AfBC33e2992c9D',
+  fakeGotchisDiamond: '0xAb59CA4A16925b0a4BaC5026C94bEB20A29Df479',
+
+  // Facets (LendingFacet/MarketplaceFacet live on the Aavegotchi diamond)
+  gotchiLending: '0xA99c4B08201F2913Db8D28e71d020c4298F29dBF',
+};
+
 const mumbaiVars = {
   // RPC
   jsonRPC: 'https://polygon-mumbai.infura.io/v3/808f937e053a4c9686997a0d7430aa08',
@@ -105,22 +134,26 @@ export interface WEB_3_VARS {
   gotchiLending?: string;
 }
 export function varsForNetwork(currentNetwork): WEB_3_VARS {
-  if (!currentNetwork && process.env.APP_ENV === 'production') return maticVars;
-  if (!currentNetwork && process.env.APP_ENV !== 'production') return mumbaiVars;
+  // Default to Base post-migration. matic/mumbai/kovan kept for reference.
+  if (!currentNetwork) return baseVars;
+  else if (currentNetwork === 'base') return baseVars;
   else if (currentNetwork === 'matic') return maticVars;
   else if (currentNetwork === 'mumbai') return mumbaiVars;
   else if (currentNetwork === 'kovan') return kovanVars;
-  else if (currentNetwork === 'localhost') return maticVars;
-  else return maticVars;
+  else if (currentNetwork === 'localhost') return baseVars;
+  else return baseVars;
 }
 
-// Subgraph
-export const coreURI = 'https://subgraph.satsuma-prod.com/tWYl5n5y04oz/aavegotchi/aavegotchi-core-matic/api';
+// Subgraph — Base (Goldsky). Project hosts the post-migration Aavegotchi indexers.
+const GOLDSKY_BASE = 'https://api.goldsky.com/api/public/project_cmh3flagm0001r4p25foufjtt/subgraphs';
 
-export const aavegotchiRealm = 'https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-realm-matic';
+export const coreURI = `${GOLDSKY_BASE}/aavegotchi-core-base/prod/gn`;
 
-export const gbmSubgraphUser = 'https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-gbm-v2';
+// Realm/parcel data lives in gotchiverse-base on Base (this const is currently unused).
+export const aavegotchiRealm = `${GOLDSKY_BASE}/gotchiverse-base/prod/gn`;
 
-export const aavegotchiSvgSubgraph = 'https://subgraph.satsuma-prod.com/tWYl5n5y04oz/aavegotchi/aavegotchi-svg-matic/api';
+export const gbmSubgraphUser = `${GOLDSKY_BASE}/aavegotchi-gbm-baazaar-base/prod/gn`;
 
-export const gotchiverseSubgraph = 'https://subgraph.satsuma-prod.com/tWYl5n5y04oz/aavegotchi/gotchiverse-matic/api';
+export const aavegotchiSvgSubgraph = `${GOLDSKY_BASE}/aavegotchi-svg-base/prod/gn`;
+
+export const gotchiverseSubgraph = `${GOLDSKY_BASE}/gotchiverse-base/prod/gn`;

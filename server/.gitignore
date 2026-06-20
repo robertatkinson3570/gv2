@@ -1,0 +1,9 @@
+# Realm server — keep runtime + deps out of the repo.
+node_modules/
+.cache/
+*.log
+
+# Env comes from PM2/systemd on the VPS (the server reads process.env directly,
+# there is no dotenv loader), so never commit one here.
+.env
+.env.*

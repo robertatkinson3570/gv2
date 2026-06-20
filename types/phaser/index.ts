@@ -88,6 +88,7 @@ export interface Scene extends Phaser.Scene {
   minimapDefaultZoom?: number;
   minimapElementsDisplaySize?: number;
   spawnedParcelsByIdMap?: any; // lodash Map
+  knownParcelIds?: Set<string>; // all streamed parcel ids (viewport culling renders the visible subset)
   localPlayerData?: LocalPlayerData;
   fadeLevel?: number;
   playersToLoad?: Player[];

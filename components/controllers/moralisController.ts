@@ -1,6 +1,29 @@
 /* eslint-disable @typescript-eslint/indent */
-import Moralis from 'moralis';
-import { EvmChain } from '@moralisweb3/common-evm-utils';
+// The Moralis SDK is a client-only wallet/NFT library that Turbopack cannot
+// evaluate (it throws "Cannot read properties of undefined (reading 'n')" both
+// during `next build` server page-data collection AND on the client). So we load
+// it ON DEMAND inside init() only — never at module-eval time, never on the
+// server — and tolerate it being unavailable. This keeps the landing/play pages
+// from crashing; the (currently deferred) NFT gallery simply stays disabled if
+// the import fails.
+type MoralisSdk = typeof import('moralis').default;
+type EvmChainType = typeof import('@moralisweb3/common-evm-utils').EvmChain;
+
+let Moralis: MoralisSdk;
+let EvmChain: EvmChainType;
+
+let moralisReady: Promise<void> | undefined;
+const ensureMoralis = (): Promise<void> => {
+  if (typeof window === 'undefined') return Promise.resolve();
+  if (!moralisReady) {
+    moralisReady = Promise.all([import('moralis'), import('@moralisweb3/common-evm-utils')]).then(([moralisMod, evmUtils]) => {
+      Moralis = moralisMod.default;
+      EvmChain = evmUtils.EvmChain;
+    });
+  }
+  return moralisReady;
+};
+
 import _ from 'lodash';
 import { getNFTDisplayStatuses, getOwnedAavegotchisOfOwner } from 'web3/subgraph/queries';
 import { useSubgraph } from 'web3/subgraph';
@@ -110,10 +133,16 @@ const allowedMoralisNetworks: MoralisNetwork[] = ['POLYGON', 'ETHEREUM'];
 let allowedCollections: AllowedCollection[];
 
 const init = async (): Promise<void> => {
-  await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
-  });
-  await getAllowedCollections();
+  try {
+    await ensureMoralis();
+    if (!Moralis) return; // SDK failed to load (e.g. Turbopack eval issue) — NFT gallery stays disabled
+    await Moralis.start({
+      apiKey: process.env.MORALIS_API_KEY,
+    });
+    await getAllowedCollections();
+  } catch (error) {
+    console.warn('@MoralisController.init: Moralis unavailable, NFT gallery disabled', error);
+  }
 };
 
 const getCollectionsByNetwork = (network: MoralisNetwork): AllowedCollection[] => {

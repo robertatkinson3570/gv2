@@ -29,8 +29,16 @@ _.map(paartnerData, (paartner) => {
   return _.assign(paartner, { parcelId: getParceIdByTokenId(paartner.tokenId) });
 });
 
+// Render each streamed parcel immediately. The server already bounds the set
+// (~2000 around the player) and parcels are lightweight rectangles, so no
+// client-side viewport culling is needed (an earlier cull attempt left the world
+// empty when the camera's worldView wasn't yet centered on the player at spawn).
 const create = (parcels: ParcelEvent[]): void => {
-  parcels.forEach(({ id }: ParcelEvent) => createParcel(id));
+  if (!scene.knownParcelIds) scene.knownParcelIds = new Set<string>();
+  parcels.forEach(({ id }: ParcelEvent) => {
+    scene.knownParcelIds.add(id);
+    createParcel(id);
+  });
 };
 
 const createParcel = (id: string): void => {
@@ -60,28 +68,19 @@ const createParcel = (id: string): void => {
       .setDepth(0);
   }
   if (!scene?.add) return;
-  const grid = scene?.add
-    .grid(x + 32, y + 32, width, height, 64, 64, fillColor, 0.05)
+  // One lightweight rectangle per parcel (fill + border) instead of a 64px cell
+  // grid mesh plus a separate stroke graphic. The mesh was the main render cost
+  // (a spacious parcel = thousands of cells) and the stroke leaked on cull; a
+  // rectangle is ~one draw call, keeps the border, and is a single tracked object.
+  const dense = scene.fadeLevel <= 0.05;
+  const rect = scene.add
+    .rectangle(x + 32, y + 32, width, height, fillColor, dense ? 0.1 : 0.05)
     .setOrigin(0)
-    .setAlpha(1)
     .setDepth(1)
-    .setFillStyle(fillColor, 0.05)
+    .setStrokeStyle(2, fillColor, dense ? 0.6 : 0.4)
     .setData('owned', flag);
-  if (!grid) return;
-  if (scene.fadeLevel <= 0.05) {
-    grid.setFillStyle(fillColor, 0.1);
-    grid.setOutlineStyle(fillColor, 0.1);
-  } else {
-    grid.setFillStyle(fillColor, 0.05);
-    grid.setOutlineStyle(fillColor, 0.5);
-  }
-
-  // add in stroke
-  const graphics = scene.add.graphics();
-  graphics.lineStyle(4, fillColor, 1);
-  graphics.strokeRect(x + 32, y + 32, width, height);
-
-  scene.spawnedParcelsByIdMap.set(id, grid);
+  if (!rect) return;
+  scene.spawnedParcelsByIdMap.set(id, rect);
 };
 
 //
@@ -91,6 +90,7 @@ const createParcel = (id: string): void => {
  * */
 const destroy = (parcels: ParcelEvent[]): void => {
   _.each(parcels, (parcel) => {
+    scene.knownParcelIds?.delete(parcel.id);
     if (scene.spawnedParcelsByIdMap.has(parcel.id)) {
       scene.spawnedParcelsByIdMap.get(parcel.id).destroy();
       scene.spawnedParcelsByIdMap.delete(parcel.id);
@@ -107,10 +107,10 @@ const fadeOut = (fadeValue: number): void => {
 
     if (scene.fadeLevel <= 0.05) {
       parcel.setFillStyle(fillColor, 0.1);
-      parcel.setOutlineStyle(fillColor, 0.1);
+      parcel.setStrokeStyle(2, fillColor, 0.6);
     } else {
       parcel.setFillStyle(fillColor, 0.05);
-      parcel.setOutlineStyle(fillColor, 0.5);
+      parcel.setStrokeStyle(2, fillColor, 0.4);
     }
   });
 };

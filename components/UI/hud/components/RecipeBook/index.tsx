@@ -202,7 +202,7 @@ export const RecipeBook = ({ selectRecipe, disabled }: Props): JSX.Element => {
   }, [currentNetwork, globalProvider]);
 
   useEffect(() => {
-    if (open && currentNetwork === 'matic' && sort !== undefined) {
+    if (open && currentNetwork === 'base' && sort !== undefined) {
       void fetchAndSetRecipesMatic(nameFilter, typeFilter, sort);
     }
   }, [currentNetwork, nameFilter, typeFilter, sort, open]);

@@ -4,6 +4,7 @@ export enum ChainId {
   kovan = 42,
   xdai = 100,
   polygon = 137,
+  base = 8453,
   mumbai = 80001,
   avalanche = 43114,
   fuji = 43113, // avalanche test network

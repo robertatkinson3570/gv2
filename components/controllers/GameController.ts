@@ -514,18 +514,43 @@ async function socketConnect(
 
     if (!isSocketTransfer) {
       const grecaptcha = (window as any).grecaptcha;
-      grecaptcha.enterprise.ready(async function () {
-        // this generates an encrypted recaptcha enterprise token to validate server side with the connection
-        let token;
-        if (GlobalState.GAME.state.gameConfig.enableRECAPTCHA) {
-          token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'SOCKET_CONNECT' });
-        }
-
+      const fireEnter = async (token?: string) => {
         playerData.authToken = localStorage.getItem('authToken');
-        sendData('enter', null, _.assign({}, playerData, { version, recaptchaToken: token, userAgent: navigator.userAgent, spawnLocId: spawnId }));
+        // SIWE: prove control of the owner wallet so the realm can trust this
+        // identity and refuse spoofed / kick-grief `enter`s. Spectators own
+        // nothing — skip. Best-effort: on any failure we still send `enter` and
+        // let the server enforce (it rejects when REQUIRE_SIWE is on).
+        let siwe: { message: string; signature: string; address: string } | undefined;
+        try {
+          const owner = selectedPlayer?.owner;
+          const signer = GlobalState.WEB3.state.ethersSigner;
+          if (!selectedPlayer?.isSpectator && owner && signer) {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/realm/auth/nonce?address=${owner}`);
+            const { message } = await res.json();
+            if (message) {
+              const signature = await signer.signMessage(message);
+              siwe = { message, signature, address: owner };
+            }
+          }
+        } catch (err) {
+          console.warn('@fireEnter:SIWE sign failed (continuing):', err);
+        }
+        sendData('enter', null, _.assign({}, playerData, { version, recaptchaToken: token, userAgent: navigator.userAgent, spawnLocId: spawnId, siwe }));
         // clear the spawnLocId after passing it, so that it doesn't get passed again on next disconnect/reconnect
         spawnId = null;
-      });
+      };
+      // When reCAPTCHA is enabled AND the enterprise script is present, fetch a
+      // token first. Otherwise (disabled, or no enterprise key — e.g. the local
+      // realm server) send `enter` directly so connecting never silently stalls.
+      if (GlobalState.GAME.state.gameConfig.enableRECAPTCHA && grecaptcha?.enterprise?.ready) {
+        grecaptcha.enterprise.ready(async function () {
+          // this generates an encrypted recaptcha enterprise token to validate server side with the connection
+          const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'SOCKET_CONNECT' });
+          fireEnter(token);
+        });
+      } else {
+        fireEnter(undefined);
+      }
     } else {
       // socket zone transfers authenticate in a different manner, through a socket-transfer channel after opening the socket
       // this does not use sendData as we haven't yet set our primary socket variable to this secondary socket

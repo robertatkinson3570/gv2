@@ -76,18 +76,25 @@ export const fetchEventsList = async (network: string, owner?: string) => {
       equipped
   }}`;
   const graph = network && network === 'mumbai' ? 'https://api.thegraph.com/subgraphs/name/froid1911/relm-1689' : gotchiverseSubgraph;
-  const eventsRes: BounceGateEvents = await useSubgraph(query, graph);
-  // console.log('eventsRes:', eventsRes);
+  try {
+    const eventsRes: BounceGateEvents = await useSubgraph(query, graph);
+    // console.log('eventsRes:', eventsRes);
 
-  let eventsData: RealmEvent[] = eventsRes.bounceGateEvents;
-  // manual filter out wrong events
-  eventsData = _.filter(eventsData, ({ endTime }) => endTime.toString().length <= 10);
-  if (!eventsData.length) return [];
+    let eventsData: RealmEvent[] = eventsRes.bounceGateEvents;
+    // manual filter out wrong events
+    eventsData = _.filter(eventsData, ({ endTime }) => endTime.toString().length <= 10);
+    if (!eventsData.length) return [];
 
-  eventsData = mapInProps(eventsData);
-  eventsData = updatePriorities(eventsData);
-  eventsData = await addParcelImages(eventsData);
-  eventsData = await fetchAndMapOnlinePlayers(eventsData);
-  console.log('EventsList:', eventsData);
-  return eventsData;
+    eventsData = mapInProps(eventsData);
+    eventsData = updatePriorities(eventsData);
+    eventsData = await addParcelImages(eventsData);
+    eventsData = await fetchAndMapOnlinePlayers(eventsData);
+    console.log('EventsList:', eventsData);
+    return eventsData;
+  } catch (e) {
+    // The gotchiverse-base subgraph doesn't index bounce-gate events, so this
+    // query 400s. Degrade to "no events" instead of an uncaught rejection.
+    console.warn('@fetchEventsList: events unavailable on this network, returning none');
+    return [];
+  }
 };

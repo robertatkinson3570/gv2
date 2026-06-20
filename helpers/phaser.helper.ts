@@ -108,9 +108,15 @@ export const getMapPos = (): string => {
   return `${scene[Players.selectedPlayer.id].x.toFixed()}, ${scene[Players.selectedPlayer.id].y.toFixed()}`;
 };
 
+// Default entry zoom. Previously MAX_ZOOM_OUT (0.25 — fully zoomed out, the
+// overview), where installations render at ~16px and are imperceptible, so the
+// world looked empty until build mode (which zooms in). Start mid-zoom so
+// buildings — yours, neighbors', and fake displays — are visible while exploring;
+// the player can still scroll out to the overview.
+const DEFAULT_ENTRY_ZOOM = Number(process.env.NEXT_PUBLIC_DEFAULT_ZOOM) || 0.6;
 export function getDefaultCameraSettings() {
   return {
-    zoom: MAX_ZOOM_OUT || WINDOW_WIDTH / MAP_SIZE.width,
+    zoom: DEFAULT_ENTRY_ZOOM,
     left: CAMERA_BOUNDS.left,
     right: CAMERA_BOUNDS.right,
     width: MAP_SIZE.width,

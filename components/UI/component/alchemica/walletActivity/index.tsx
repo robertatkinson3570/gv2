@@ -117,7 +117,7 @@ export const WalletActivity = ({ toggle }: Props): JSX.Element => {
   };
 
   const viewTx = (tx: TransactionHistory): void => {
-    const networkURL = GlobalState.WEB3.state.currentNetwork === 'matic' ? 'www.polygonscan.com' : 'mumbai.polygonscan.com';
+    const networkURL = GlobalState.WEB3.state.currentNetwork === 'base' ? 'basescan.org' : 'www.polygonscan.com';
     if (!tx.hash) return;
     window.open(`https://${networkURL}/tx/${tx.hash}`, 'blank');
   };

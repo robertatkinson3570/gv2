@@ -107,6 +107,8 @@ export function chainIdToName(chainId: number): NetworkNames {
       return 'mumbai';
     case 137:
       return 'matic';
+    case 8453:
+      return 'base';
     case 5:
       return 'goerli';
 
@@ -554,9 +556,13 @@ export function collateralByAddress(network: string, address: string): Collatera
   //   else if (network === 'matic') return add.maticAddress.toLowerCase() === address.toLowerCase();
   //   else return add.kovanAddress.toLowerCase() === address.toLowerCase();
   // });
-  const collateral = collaterals.find((add) => add.maticAddress.toLowerCase() === address.toLowerCase());
+  const collateral = address ? collaterals.find((add) => add.maticAddress.toLowerCase() === address.toLowerCase()) : undefined;
 
-  if (collateral != null) return collateral;
+  // Base gotchi collateral addresses don't match the Polygon `collaterals` table,
+  // so fall back to the first entry to keep callers (which read .secondaryColor
+  // etc. without a null check) from crashing. Colors are an approximation until a
+  // Base collateral table is added.
+  return collateral ?? collaterals[0];
 }
 
 export async function addPolygon(): Promise<void> {
@@ -574,6 +580,26 @@ export async function addPolygon(): Promise<void> {
           symbol: 'MATIC',
         },
         blockExplorerUrls: ['https://polygonscan.com/'],
+      },
+    ],
+  });
+}
+
+export async function addBase(): Promise<void> {
+  // @ts-expect-error
+  await window.ethereum?.request({
+    method: 'wallet_addEthereumChain',
+    params: [
+      {
+        chainId: '0x2105', // 8453
+        rpcUrls: ['https://mainnet.base.org'],
+        chainName: 'Base',
+        nativeCurrency: {
+          name: 'Ethereum',
+          decimals: 18,
+          symbol: 'ETH',
+        },
+        blockExplorerUrls: ['https://basescan.org'],
       },
     ],
   });

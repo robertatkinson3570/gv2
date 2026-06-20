@@ -271,7 +271,7 @@ export const fetchAndSetGlobalParcels = async (
   }
 
   if (!accounts) return;
-  if (GlobalState.WEB3.state.currentNetwork === 'matic' || (page && page !== 1)) {
+  if (GlobalState.WEB3.state.currentNetwork === 'base' || (page && page !== 1)) {
     const query = getUsersParcels(accounts, filter || {}, page || 1);
     const res = await useSubgraph<{ parcels: GotchiverseParcel[] }>(query, gotchiverseSubgraph);
     fetchedParcels = res?.parcels;

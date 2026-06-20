@@ -19,7 +19,10 @@ export const MaticNeeded = (): JSX.Element => {
     }
   }, [currentAccount, globalProvider, currentNetwork]);
 
-  const hasBalance = maticBalance !== undefined ? maticBalance >= 0.1 : true;
+  // Base gas is tiny (cents), so the 0.1 Polygon-era threshold was wrong — it
+  // flagged "out of gas" for wallets holding plenty of ETH. ~0.0005 ETH covers
+  // many txns on Base.
+  const hasBalance = maticBalance !== undefined ? maticBalance >= 0.0005 : true;
 
   return (
     <>
@@ -28,8 +31,8 @@ export const MaticNeeded = (): JSX.Element => {
           <div className="inner">
             <Image alt="" src={PolygonIcon} width={54} height={54} />
             <div className="content">
-              <p>You{"'"}re out of MATIC!</p>
-              <a href="https://wallet.polygon.technology/gas-swap/" target="_blank" rel="noreferrer">
+              <p>You{"'"}re out of ETH!</p>
+              <a href="https://bridge.base.org/" target="_blank" rel="noreferrer">
                 <Button size={1.8} fullWidth secondary>
                   Swap for Gas Token
                 </Button>
