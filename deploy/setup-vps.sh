@@ -87,7 +87,7 @@ if [[ -d "$APP_DIR/.git" ]]; then
   yellow "$APP_DIR exists — pulling latest"
   cd "$APP_DIR"; git remote set-url origin "$CLONE_URL"; git fetch --all --prune; git reset --hard origin/master
 else
-  [[ -n "${GH_PAT:-}" ]] || { red "gv2 is private — export GH_PAT before running so the clone can authenticate."; exit 1; }
+  # Plain clone works for a public repo; GH_PAT (if set) auths a private one.
   git clone "$CLONE_URL" "$APP_DIR"
 fi
 green "$APP_DIR $(git -C "$APP_DIR" rev-parse --short HEAD)"
