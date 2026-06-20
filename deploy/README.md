@@ -7,7 +7,7 @@ Resurrected gotchiverse-2d. Two pieces:
 | Frontend (Next.js) | Vercel                           | `gv2.gotchicloset.com`    |
 | Realm server (ws)  | Hostinger VPS (Docker + nginx)   | `realm.gotchicloset.com`  |
 
-**Deploy model (mirrors gotchi-closet):** the VPS (`31.97.216.251`, `srv1360330`)
+**Deploy model (mirrors gotchi-closet):** the VPS (`187.77.15.149`, `srv1360330`)
 **refuses external SSH**. A self-hosted GitHub Actions runner labelled `gv2-vps`
 runs *on* the box; every push to `master` rebuilds the isolated `gv2`
 docker-compose project. One-time bootstrap is done via the **hPanel Browser
@@ -44,7 +44,7 @@ namespaced so it can never touch them:
 
 ## 1. DNS (on gotchicloset.com)
 
-- `A`     `realm.gotchicloset.com` → `31.97.216.251`
+- `A`     `realm.gotchicloset.com` → `187.77.15.149`
 - `CNAME` `gv2.gotchicloset.com`   → the target Vercel shows under the project's Domains tab
   (typically `cname.vercel-dns.com`)
 

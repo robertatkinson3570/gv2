@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap the gv2 realm server on the existing Hostinger VPS (31.97.216.251).
+# Bootstrap the gv2 realm server on the existing Hostinger VPS (187.77.15.149).
 # Run via hPanel Browser Terminal as root — external SSH is refused on this box.
 # Idempotent: re-running won't double-create.
 #
@@ -135,6 +135,6 @@ done
 section "Done"
 green "Realm server up at 127.0.0.1:${HEALTH_PORT} inside the VPS."
 green "Next (separate from this script):"
-green "  - DNS: A record realm.gotchicloset.com -> 31.97.216.251"
+green "  - DNS: A record realm.gotchicloset.com -> 187.77.15.149"
 green "  - nginx + certbot for realm.gotchicloset.com (see deploy/README.md, deploy/nginx-realm.conf)"
 green "  - After that, every push to master auto-deploys via GitHub Actions."
