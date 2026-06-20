@@ -50,13 +50,14 @@ namespaced so it can never touch them:
 
 ## 2. One-time VPS bootstrap (hPanel Browser Terminal, as root)
 
-```bash
-# a) Get a runner token: https://github.com/robertatkinson3570/gv2/settings/actions/runners/new
-#    (Linux x64) — copy the long string after --token
-export RUNNER_TOKEN='PASTE_TOKEN'
+gv2 is a **private** repo, so use a classic PAT (`repo` scope) — one token
+authenticates the script fetch, the private clone, the runner registration, and
+every later GitHub Actions `git fetch`:
 
-# b) Run the bootstrap (registers runner, clones repo, writes .env, builds, health-checks)
-curl -fsSL https://raw.githubusercontent.com/robertatkinson3570/gv2/master/deploy/setup-vps.sh | bash
+```bash
+export GH_PAT='ghp_YOUR_TOKEN'   # mint: https://github.com/settings/tokens/new (classic, 'repo')
+curl -fsSL -H "Authorization: token $GH_PAT" -H "Accept: application/vnd.github.raw" \
+  "https://api.github.com/repos/robertatkinson3570/gv2/contents/deploy/setup-vps.sh?ref=master" | bash
 ```
 
 Then, after the DNS A record is live, add nginx + TLS:

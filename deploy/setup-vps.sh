@@ -3,9 +3,11 @@
 # Run via hPanel Browser Terminal as root — external SSH is refused on this box.
 # Idempotent: re-running won't double-create.
 #
-# Auth to register the runner (pick one, export before running):
-#   export RUNNER_TOKEN='AABBCC...'   # from repo Settings > Actions > Runners > New
-#   export GH_PAT='ghp_xxx'           # classic PAT, 'repo' scope; script mints the token
+# Auth (gv2 is a PRIVATE repo): export a classic PAT with 'repo' scope FIRST.
+#   export GH_PAT='ghp_xxx'   # used BOTH for the private git clone AND to mint the
+#                             # runner registration token. Mint at:
+#                             # https://github.com/settings/tokens/new (classic, 'repo')
+# (A bare RUNNER_TOKEN is not enough here — the private clone needs auth too.)
 #
 # STRICT ISOLATION — this box also runs gotchicloset (port 8791) and marquiq:
 #   - app dir /root/gv2, runner /opt/actions-runner-gv2, compose project `gv2`
@@ -77,11 +79,16 @@ green "runner status:"; cd "$RUNNER_DIR" && ./svc.sh status || true
 # --- 2. Repo checkout ----------------------------------------------------------
 section "2/4  Repo checkout"
 
+# Private repo: embed the PAT in the remote so the clone AND every later
+# GitHub Actions `git fetch` (in the deploy workflow) authenticate.
+CLONE_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
+[[ -n "${GH_PAT:-}" ]] && CLONE_URL="https://x-access-token:${GH_PAT}@github.com/${REPO_OWNER}/${REPO_NAME}.git"
 if [[ -d "$APP_DIR/.git" ]]; then
   yellow "$APP_DIR exists — pulling latest"
-  cd "$APP_DIR"; git fetch --all --prune; git reset --hard origin/master
+  cd "$APP_DIR"; git remote set-url origin "$CLONE_URL"; git fetch --all --prune; git reset --hard origin/master
 else
-  git clone "https://github.com/${REPO_OWNER}/${REPO_NAME}.git" "$APP_DIR"
+  [[ -n "${GH_PAT:-}" ]] || { red "gv2 is private — export GH_PAT before running so the clone can authenticate."; exit 1; }
+  git clone "$CLONE_URL" "$APP_DIR"
 fi
 green "$APP_DIR $(git -C "$APP_DIR" rev-parse --short HEAD)"
 
