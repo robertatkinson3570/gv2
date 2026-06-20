@@ -1,0 +1,33 @@
+# Realm server — ISOLATED docker-compose project on the shared Hostinger VPS.
+#
+# ALWAYS run with both flags:   docker compose -p gv2 -f deploy/docker-compose.yml <cmd>
+# The `-p gv2` namespaces every container/volume/network as `gv2_*`, so this can
+# never touch gotchicloset (port 8791) or marquiq on the same box.
+#
+# Isolation map (DO NOT change without updating the runbook):
+#   project name : gv2            container : gv2-realm
+#   host bind    : 127.0.0.1:8792 (gotchicloset uses 8791 — must not collide)
+#   volume       : gv2_realm_data nginx site : realm.gotchicloset.com
+
+services:
+  realm:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: gv2-realm
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    # Localhost-only bind; nginx reverse-proxies realm.gotchicloset.com here.
+    ports:
+      - "127.0.0.1:8792:8080"
+    volumes:
+      - realm_data:/app/.cache
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/realm/socket').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  realm_data:

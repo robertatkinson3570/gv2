@@ -1,0 +1,84 @@
+name: Deploy realm server to VPS
+
+# Mirrors gotchi-closet's pipeline: a self-hosted runner ON the Hostinger VPS
+# pulls + rebuilds the isolated `gv2` docker-compose project. No external SSH
+# (the box refuses it). Branch is master (gv2's default).
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "server/**"
+      - "deploy/**"
+      - ".github/workflows/deploy-realm.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-realm
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, gv2-vps]
+    timeout-minutes: 15
+    steps:
+      - name: Pull latest
+        run: |
+          set -euxo pipefail
+          cd /root/gv2
+          git fetch --all --prune
+          git reset --hard origin/master
+
+      - name: Sync secrets into .env
+        # .env is gitignored and survives `git reset --hard`. Sync the Base RPC key
+        # from an encrypted GitHub secret so we never need SSH to manage it. Avoids
+        # `-x` so the value is never echoed into the build log.
+        env:
+          BASE_RPC: ${{ secrets.BASE_RPC }}
+        run: |
+          set -euo pipefail
+          cd /root/gv2
+          touch .env
+          set_var() {
+            local name="$1" val="$2"
+            grep -v "^${name}=" .env > .env.tmp 2>/dev/null || true
+            if [ -n "$val" ]; then printf '%s=%s\n' "$name" "$val" >> .env.tmp; fi
+            mv .env.tmp .env
+          }
+          if [ -n "${BASE_RPC:-}" ]; then set_var BASE_RPC "$BASE_RPC"; echo "BASE_RPC synced (len=${#BASE_RPC})"; else echo "no BASE_RPC secret — using server default public RPC"; fi
+
+      - name: Build + start
+        # Isolation: -p gv2 namespaces all resources as gv2_*. Cannot affect
+        # gotchicloset (8791) or marquiq on this box.
+        run: |
+          set -euxo pipefail
+          cd /root/gv2
+          docker compose -p gv2 -f deploy/docker-compose.yml up -d --build
+
+      - name: Health check
+        run: |
+          set -uxo pipefail
+          cd /root/gv2
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS http://127.0.0.1:8792/realm/socket > /tmp/gv2_health.json; then
+              cat /tmp/gv2_health.json; echo; echo "ok"; exit 0
+            fi
+            echo "wait $i…"; sleep 3
+          done
+          echo "health check failed"; exit 1
+
+      - name: Diagnostics on failure
+        if: failure()
+        run: |
+          set -uxo pipefail
+          cd /root/gv2
+          echo "==== ps ===="
+          docker compose -p gv2 -f deploy/docker-compose.yml ps -a || true
+          echo "==== logs ===="
+          docker compose -p gv2 -f deploy/docker-compose.yml logs --tail=200 || true
+
+      - name: Show status
+        if: always()
+        run: |
+          cd /root/gv2
+          docker compose -p gv2 -f deploy/docker-compose.yml ps -a || true

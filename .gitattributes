@@ -1,0 +1,7 @@
+# Keep deploy scripts/config as LF on the Linux VPS regardless of contributor
+# autocrlf settings — a CRLF in setup-vps.sh would break `bash` (bad interpreter).
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.conf      text eol=lf
