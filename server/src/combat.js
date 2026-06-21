@@ -19,7 +19,11 @@ export function spawnEnemies(cx, cy, n, spread = 900) {
   const out = [];
   for (let i = 0; i < n; i++) {
     const e = {
-      id: `enemy-${++_eseq}`,
+      // The client derives the enemy model from id.split('-')[0] (Enemies.ts) and
+      // looks up `${model}_head` etc. in its loaded assets. It must be a real model
+      // ('GMLS' | 'PLM2' | 'ROFL'); a generic prefix like 'enemy' resolves to no
+      // asset and crashes the whole scene (undefined.leftOffset). GMLS = Lickquidator.
+      id: `GMLS-${++_eseq}`,
       x: Math.round(cx + rnd(spread * 2) - spread),
       y: Math.round(cy + rnd(spread * 2) - spread),
       name: 'Lickquidator',

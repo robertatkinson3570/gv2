@@ -101,6 +101,14 @@ const create = async (enemies: Enemy[]): Promise<void> => {
 
         const headSpriteKey = `${enemy.model}_head`;
         const jsonConfig = AssetsController.jsonAssets[headSpriteKey];
+        // Defensive: an unknown model (e.g. a server enemy id without a valid
+        // 'GMLS'/'PLM2'/'ROFL' prefix) has no head config. Skip that enemy instead
+        // of dereferencing undefined, which would crash the whole scene/app.
+        if (!jsonConfig) {
+          console.warn(`@Enemies.create: no head config "${headSpriteKey}" for enemy ${id} — skipping`);
+          container.destroy();
+          return;
+        }
         enemy.headOffset = jsonConfig.leftOffset;
 
         headContainer = scene.add.container(x, y);
