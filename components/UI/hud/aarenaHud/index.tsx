@@ -13,6 +13,7 @@ import { blockPropagation } from 'helpers/functions';
 import { ItemShopButton } from 'components/UI/elements';
 import { useGame } from 'contexts/GameContext';
 import { DebugConsole } from 'components/UI/component/extras/DebugConsole';
+import { GocartButton } from 'components/UI/hud/components/GocartButton';
 import { useRealm } from 'contexts/RealmContext';
 import { Leaderboard } from '../components/Leaderboard';
 
@@ -98,6 +99,16 @@ export const AarenaHUD = () => {
       <div className="bottom-left-container">
         <PlayerDashboard />
       </div>
+
+      <div
+        className="gocart-button-container"
+        style={{ position: 'absolute', bottom: '13rem', left: '50%', transform: 'translateX(-50%)', zIndex: 30 }}
+        onClick={blockPropagation}
+        onMouseDown={blockPropagation}
+      >
+        <GocartButton />
+      </div>
+
       <ControllGuide />
 
       <style jsx>{styles}</style>
