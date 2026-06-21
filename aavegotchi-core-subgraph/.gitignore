@@ -1,0 +1,9 @@
+node_modules/
+/generated
+/build
+.env
+yarn-error.log
+cache
+tests/.bin/
+
+.vscode
