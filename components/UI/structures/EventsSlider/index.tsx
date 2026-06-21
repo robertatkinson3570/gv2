@@ -6,6 +6,7 @@ import styles from './styles';
 import { useEffect, useState } from 'react';
 import { RealmEvent } from 'types';
 import useAavegotchiSound from 'hooks/useAavegotchiSound';
+import { DEFAULT_EVENT_ID } from 'helpers/events.helper';
 
 interface Props {
   onSelect: (id: string, isEvent?: boolean) => void;
@@ -34,6 +35,10 @@ export const EventsSlider = ({ onSelect }: Props): JSX.Element => {
       setCurrentIndex(currentIndex + increment);
     } else oops();
   };
+
+  // The default event renders as the GrimLabs hero card in the list; its logo would
+  // be cropped badly here, so skip the slider when it's the only event.
+  if (eventsList?.length === 1 && eventsList[0]?.id === DEFAULT_EVENT_ID) return <></>;
 
   return (
     <>

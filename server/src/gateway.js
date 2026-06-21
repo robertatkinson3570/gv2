@@ -31,7 +31,7 @@ import { itemsNear, collectAt, totalItems, registerParcelProducers } from './alc
 import { loadPlayer, savePlayer } from './playerStore.js';
 import { verifyGotchiAccess } from './auth.js';
 import { verifySiwe, addrEq } from './siwe.js';
-import { enemiesNear } from './combat.js';
+import { enemiesNear, clearEnemiesNear } from './combat.js';
 import { initProgress, addProgress } from './progression.js';
 
 /** Notify a player of a completed quest via a SERVER chat line. */
@@ -48,9 +48,11 @@ function notifyQuests(ws, completed) {
   }
 }
 
-// #5: enable the aarena-style combat zone (Lickquidators). Off by default so the
-// citaadel stays peaceful; flip COMBAT_ENABLED=true to turn it on everywhere.
-export const COMBAT_ENABLED = process.env.COMBAT_ENABLED === 'true';
+// #5 combat master switch lives in config.js (single source of truth, also read
+// by the http config endpoint). Re-exported so index.js keeps importing it here.
+// When on, the aarena is a live Lickquidator combat zone; the citaadel stays peaceful.
+import { COMBAT_ENABLED } from './config.js';
+export { COMBAT_ENABLED };
 
 // #8: enforce gotchi-ownership at join (kick spoofers). Secure by default;
 // set ENFORCE_AUTH=false for keyless local dev where you can't sign.
@@ -65,7 +67,7 @@ import {
   handleCombatAction,
   handleInstallationsAction,
 } from './gameActions.js';
-import { TILE_SIZE } from './config.js';
+import { TILE_SIZE, AARENA_SPAWN, AARENA_SPAWN_JITTER, AARENA_SPAWN_GRACE_MS } from './config.js';
 
 // The full map is 55k parcels — rendering them all at once overwhelms Phaser, so
 // stream a large-but-bounded region around the player and cull as they leave it.
@@ -233,6 +235,90 @@ export function streamEnemies(ws, session) {
   if (cull.length) send(ws, 'leave', { enemy: cull.map((id) => ({ id })) });
 }
 
+// Spread arena spawns around the center without stacking (no Math.random needed).
+let _arenaSeq = 0;
+function arenaJitter() {
+  _arenaSeq++;
+  return ((_arenaSeq * 211) % (AARENA_SPAWN_JITTER * 2)) - AARENA_SPAWN_JITTER;
+}
+
+// Drop a player into the dedicated aarena combat map: spawn at the arena center,
+// stream NO citaadel parcels/installations/alchemica, announce combat state, and
+// show only other aarena players (citaadel players live in a far coordinate space).
+function enterAarena(ws, session) {
+  const saved = loadPlayer(session.id);
+  setSpawn(session, AARENA_SPAWN.x + arenaJitter(), AARENA_SPAWN.y + arenaJitter());
+  // AOI is parcel-streaming state; the arena streams nothing, so keep it inert.
+  session.aoi = { cx: 0, cy: 0, sent: new Set() };
+  session.installSent = new Set();
+  session.ownedParcels = [];
+  console.log(`[ws] enter(aarena): gotchi ${session.id} (${session.name}) at (${Math.round(session.x)},${Math.round(session.y)})`);
+  send(ws, 'connection-success', {
+    ...toSpawnPlayer(session),
+    playerWallet: { FUD: 0, FOMO: 0, ALPHA: 0, KEK: 0 },
+    health: 100,
+    traits: {},
+    traitsBases: {},
+    wearableTraitBonuses: {},
+  });
+  send(ws, 'game-config-update', { combatIsLive: COMBAT_ENABLED, miniGameMode: false });
+  // #6 progression (xp + daily quests) carries across maps.
+  session.carried = saved.carried;
+  session.wallet = saved.wallet;
+  initProgress(session, saved);
+  send(ws, 'chat', {
+    type: 'SERVER',
+    id: 'realm',
+    name: 'Realm',
+    time: Date.now(),
+    message: `Welcome to the Aarena! Defeat the Lickquidators. XP ${session.xp}.`,
+    channel: 'global',
+  });
+  // #5 combat state. Spawn protection so the first seconds in the arena aren't an
+  // instant death into the Lickquidator swarm (see AARENA_SPAWN_GRACE_MS).
+  session.health = 100;
+  session.maxHealth = 100;
+  session.ap = 50;
+  session.maxAP = 50;
+  session.isDead = false;
+  session.combatGraceUntil = Date.now() + AARENA_SPAWN_GRACE_MS;
+  // Presence, scoped to the arena (don't show or notify citaadel players).
+  const others = [];
+  forEachOtherSession(ws, (_otherWs, s) => {
+    if (s.map === 'aarena') others.push(toSpawnPlayer(s));
+  });
+  if (others.length) send(ws, 'enter', { player: others });
+  forEachOtherSession(ws, (otherWs, s) => {
+    if (s.map === 'aarena') send(otherWs, 'enter', { player: [toSpawnPlayer(session)] });
+  });
+}
+
+// Apply combat damage to an arena player. Shared by the Lickquidator AI (PVE)
+// and by player fire (PVP) so death/respawn behave identically. Honors spawn
+// protection + death, broadcasts the health bar to everyone in the arena, and on
+// death sends the kill and schedules a protected respawn (clears the local swarm
+// and re-grants grace so the victim doesn't instantly die again).
+export function damageArenaPlayer(ws, session, dmg, attackerName) {
+  if (!session || session.isDead || Date.now() < (session.combatGraceUntil || 0)) return;
+  session.health = Math.max(0, (session.health ?? 100) - dmg);
+  forEachSession((w, s) => {
+    if (s.map === 'aarena') send(w, 'health-changed', { id: session.id, health: session.health, damage: dmg, type: 'player' });
+  });
+  if (session.health > 0) return;
+  session.isDead = true;
+  send(ws, 'death', { respawnDelay: 5000, attackerName: attackerName || 'Lickquidator', damageType: 'melee', deathTime: Date.now() });
+  setTimeout(() => {
+    if (!session) return;
+    session.health = session.maxHealth ?? 100;
+    session.isDead = false;
+    const cleared = clearEnemiesNear(session.x, session.y, 2200);
+    if (cleared.length) forEachSession((w, s) => { if (s.map === 'aarena') send(w, 'leave', { enemy: cleared.map((id) => ({ id })) }); });
+    session.combatGraceUntil = Date.now() + AARENA_SPAWN_GRACE_MS;
+    send(ws, 'respawn', {});
+    send(ws, 'health-changed', { id: session.id, health: session.health, type: 'player' });
+  }, 5000);
+}
+
 /** Build the action-handler context (send helpers + owned-installation reader). */
 function makeActionCtx(ws, session) {
   return {
@@ -240,6 +326,19 @@ function makeActionCtx(ws, session) {
     sendSelf: (channel, data) => send(ws, channel, data),
     sendOthers: (channel, data) => forEachOtherSession(ws, (otherWs) => send(otherWs, channel, data)),
     sendAll: (channel, data) => forEachSession((otherWs) => send(otherWs, channel, data)),
+    // PVP: damage the nearest OTHER arena player within `range` px of the shooter.
+    damageNearestPlayer: (range, dmg, attackerName) => {
+      let best = null;
+      let bestD2 = range * range;
+      forEachOtherSession(ws, (otherWs, s) => {
+        if (s.map !== 'aarena' || s.isDead) return;
+        const dx = s.x - session.x;
+        const dy = s.y - session.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 <= bestD2) { bestD2 = d2; best = { ws: otherWs, session: s }; }
+      });
+      if (best) damageArenaPlayer(best.ws, best.session, dmg, attackerName);
+    },
     ownedNearInstallations: async () => {
       const owned = session.ownedParcels || [];
       const gx = Math.round(session.x / TILE_SIZE);
@@ -377,6 +476,12 @@ export function handleMessage(ws, raw) {
           session.unverified = true;
         } else if (access.reason === 'owner' || access.reason === 'borrower') {
           console.log(`[auth] verified gotchi ${session.id} for ${session.owner} (${access.reason})`);
+        }
+        // Dedicated aarena combat map: a different coordinate space with no
+        // parcels. Spawn into the arena and skip all citaadel streaming below.
+        if (session.map === 'aarena') {
+          enterAarena(ws, session);
+          return;
         }
         // Spawn priority: (1) the parcel the player selected (data.spawnLocId,
         // a parcelId "C-<x>-<y>-..."); (2) on a re-enter WITHOUT a selection,

@@ -98,7 +98,7 @@ export const ShopItemElement = ({ item, quantity, count, onChange }: ShopItemInt
             </div>
             <div className="item-info">
               <div className="item-image-container clickable" onClick={onInc}>
-                <Image alt="" src={item.image} objectFit="contain" />
+                <Image alt="" src={item.image} layout="fill" objectFit="contain" />
               </div>
 
               <div className="item-description-wrapper clickable" onClick={onInc}>

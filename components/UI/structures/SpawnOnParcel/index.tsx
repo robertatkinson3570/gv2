@@ -166,7 +166,7 @@ export const SpawnOnParcel = ({ spawnParcelId, handleSpawnSelect }: Props): JSX.
         </div>
         {isLoading ? (
           <div className="loading-image">
-            <Image alt="" src={GotchiverseLoading} height={200} width={330} objectFit="contain" />
+            <Image alt="" src={GotchiverseLoading} height={198} width={168} objectFit="contain" />
           </div>
         ) : (
           <ParcelsList

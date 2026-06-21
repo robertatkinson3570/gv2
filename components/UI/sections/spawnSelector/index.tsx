@@ -3,6 +3,7 @@
 import styles from './styles';
 import { Button, CloseButton } from 'components/UI/elements';
 import { Baazaar } from 'assets';
+import { gotchiverseLinks } from 'data/links';
 import { useWeb3 } from 'contexts/Web3Context';
 import Image from 'next/image';
 import { useUser } from 'contexts/UserContext';
@@ -107,7 +108,7 @@ export const SpawnSelector = ({ handleSelect, onClose, type, selectedSpawn, sele
                           <Image alt="" src={Baazaar} width={193} height={206} layout="responsive" />
                         </div>
                         <a
-                          href="https://app.aavegotchi.com/baazaar/realm"
+                          href={gotchiverseLinks.aavegotchi.baazar}
                           target="__blank"
                           style={{
                             width: '100%',

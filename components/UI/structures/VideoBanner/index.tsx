@@ -15,6 +15,9 @@ interface Props {
 }
 export const VideoBanner = ({ isShort, setIsShort }: Props): JSX.Element => {
   const [{ activeCount }] = useGame();
+  // Guard against a missing/undefined count so the banner never renders the literal
+  // word "undefined" if /users/online ever returns no number.
+  const playerCount = Number.isFinite(activeCount) ? activeCount : 0;
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export const VideoBanner = ({ isShort, setIsShort }: Props): JSX.Element => {
   return (
     <>
       <div className={`banner-container clickable ${isShort ? 'short' : ''}`}>
-        <div className="version-container">{`REALM v${GameController.version} | ${activeCount} player${activeCount !== 1 ? 's' : ''} online`}</div>
+        <div className="version-container">{`REALM v${GameController.version} | ${playerCount} player${playerCount !== 1 ? 's' : ''} online`}</div>
         <div className="close-toggle-container">
           <button className="close-toggle" onClick={onToggleClose}>
             <ToggleAccordionIcon active={isShort} direction="down" size={5} stroke="var(--col-black)" />

@@ -7,6 +7,35 @@ import { gotchiverseSubgraph } from 'shared_code/web3/shared.const.web3';
 
 const DECAY = 0.0001;
 
+// Bounce-gate events aren't indexed on Base, so the live list is always empty.
+// Surface a single default event ("Grim restores GV2!") so the JOIN AN EVENT
+// section is never blank. Clicking it spawns the player on a District 1 parcel.
+// The user's own "your events" view (owner filter) legitimately shows nothing
+// when they have none.
+export const DEFAULT_EVENT_ID = 'grimlabs';
+
+export const buildDefaultEvent = (): RealmEvent => {
+  const now = Math.floor(Date.now() / 1000);
+  return {
+    id: DEFAULT_EVENT_ID,
+    parcelId: 'C-3208-2112-U', // a District 1 parcel -> drops the player in District 1
+    title: 'Grim restores GV2!',
+    priority: 999999,
+    basePriority: 999999,
+    startTime: now - 3600,
+    lastTimeUpdated: now,
+    endTime: now + 60 * 60 * 24 * 365,
+    count: 0,
+    minutesDelta: 0,
+    cancelled: false,
+    parcel: { parcelId: 'C-3208-2112-U', tokenId: '10280', hood: 'C43', parcelHash: 'should-system-spending', district: 1 },
+    image: '/grimlabs-reaper.png',
+    active: true,
+  };
+};
+
+const emptyOrDefault = (owner?: string): RealmEvent[] => (owner ? [] : [buildDefaultEvent()]);
+
 const mapInProps = (bounceGateEvents: RealmEvent[]) => {
   const now = Date.now() / 1000;
   // First map in parcelId for each event;
@@ -83,7 +112,7 @@ export const fetchEventsList = async (network: string, owner?: string) => {
     let eventsData: RealmEvent[] = eventsRes.bounceGateEvents;
     // manual filter out wrong events
     eventsData = _.filter(eventsData, ({ endTime }) => endTime.toString().length <= 10);
-    if (!eventsData.length) return [];
+    if (!eventsData.length) return emptyOrDefault(owner);
 
     eventsData = mapInProps(eventsData);
     eventsData = updatePriorities(eventsData);
@@ -94,7 +123,7 @@ export const fetchEventsList = async (network: string, owner?: string) => {
   } catch (e) {
     // The gotchiverse-base subgraph doesn't index bounce-gate events, so this
     // query 400s. Degrade to "no events" instead of an uncaught rejection.
-    console.warn('@fetchEventsList: events unavailable on this network, returning none');
-    return [];
+    console.warn('@fetchEventsList: events unavailable on this network, returning default');
+    return emptyOrDefault(owner);
   }
 };

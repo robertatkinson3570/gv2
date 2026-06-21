@@ -4,7 +4,7 @@
 
 import { WebSocketServer } from 'ws';
 import { createHttpServer } from './httpServer.js';
-import { handleMessage, handleClose, broadcast, updateAoi, collectAlchemica, streamAlchemica, streamEnemies, send, COMBAT_ENABLED } from './gateway.js';
+import { handleMessage, handleClose, broadcast, updateAoi, collectAlchemica, streamAlchemica, streamEnemies, send, damageArenaPlayer, COMBAT_ENABLED } from './gateway.js';
 import { produceNear } from './alchemica.js';
 import { spawnEnemies, enemiesNear, combatTick, enemyCount } from './combat.js';
 import { tick, forEachSession } from './world.js';
@@ -63,45 +63,42 @@ if (COMBAT_ENABLED) {
   let _apAccum = 0;
   setInterval(() => {
     const now = Date.now();
+    // Combat belongs to the aarena only — the citaadel stays peaceful. Build the
+    // combat roster from arena sessions; enemies spawn near and target only them.
     const players = [];
-    forEachSession((ws, session) => players.push({ ws, session, id: session.id, x: session.x, y: session.y, isDead: !!session.isDead }));
+    forEachSession((ws, session) => {
+      if ((session.map || 'citaadel') === 'aarena') {
+        players.push({ ws, session, id: session.id, x: session.x, y: session.y, isDead: !!session.isDead });
+      }
+    });
     if (!players.length) return;
-    // Spawn Lickquidators near players where the area is sparse.
+    // Spawn Lickquidators near arena players where the area is sparse.
     for (const p of players) {
+      // Lickquidators spawn and close in immediately so the arena is never empty.
+      // Spawn protection (in the attack loop below) only makes the player
+      // damage-immune for the grace window; it does NOT hide the enemies.
       if (!p.isDead && enemyCount() < 250 && enemiesNear(p.x, p.y, 1600).length < 8) spawnEnemies(p.x, p.y, 5, 1100);
     }
-    // Enemy AI -> moves + attacks.
+    // Enemy AI -> moves + attacks. Stream moves to arena players only (citaadel
+    // clients never received the enemies, so must not get their position frames).
     const { moves, attacks } = combatTick(players, now);
-    if (moves.length) broadcast(wss, 'positions', { enemy: moves });
+    if (moves.length) for (const p of players) send(p.ws, 'positions', { enemy: moves });
     for (const atk of attacks) {
       const t = players.find((p) => p.id === atk.playerId);
-      if (!t || t.session.isDead) continue;
-      t.session.health = Math.max(0, (t.session.health ?? 100) - atk.dmg);
-      send(t.ws, 'health-changed', { id: t.id, health: t.session.health, damage: atk.dmg, type: 'player' });
-      if (t.session.health <= 0) {
-        t.session.isDead = true;
-        send(t.ws, 'death', { respawnDelay: 5000, attackerId: atk.enemyId, attackerName: 'Lickquidator', damageType: 'melee', deathTime: now });
-        const dead = t;
-        setTimeout(() => {
-          if (!dead.session) return;
-          dead.session.health = dead.session.maxHealth ?? 100;
-          dead.session.isDead = false;
-          send(dead.ws, 'respawn', {});
-          send(dead.ws, 'health-changed', { id: dead.id, health: dead.session.health, type: 'player' });
-        }, 5000);
-      }
+      // Lickquidator hit -> shared damage path (spawn protection, death, protected respawn).
+      if (t) damageArenaPlayer(t.ws, t.session, atk.dmg, 'Lickquidator');
     }
-    // AP regen (~1s) + enemy streaming.
+    // AP regen (~1s) + enemy streaming, arena players only.
     _apAccum += 120;
     const regen = _apAccum >= 1000;
     if (regen) _apAccum = 0;
-    forEachSession((ws, session) => {
-      streamEnemies(ws, session);
-      if (regen && !session.isDead) {
-        session.ap = Math.min(session.maxAP ?? 50, (session.ap ?? 50) + 2);
-        send(ws, 'ap-changed', { id: session.id, ap: session.ap, type: 'player' });
+    for (const p of players) {
+      streamEnemies(p.ws, p.session);
+      if (regen && !p.session.isDead) {
+        p.session.ap = Math.min(p.session.maxAP ?? 50, (p.session.ap ?? 50) + 2);
+        send(p.ws, 'ap-changed', { id: p.id, ap: p.session.ap, type: 'player' });
       }
-    });
+    }
   }, 120);
 }
 

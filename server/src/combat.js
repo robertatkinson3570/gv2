@@ -46,6 +46,23 @@ export function enemiesNear(x, y, radius) {
   return out;
 }
 
+/** Remove every enemy within `radius` px of (x,y). Returns the removed ids so
+ * the caller can tell clients to despawn them (used on respawn so the player
+ * isn't dropped straight back into the swarm that just killed them). */
+export function clearEnemiesNear(x, y, radius) {
+  const r2 = radius * radius;
+  const removed = [];
+  for (const [id, e] of enemies) {
+    const dx = e.x - x;
+    const dy = e.y - y;
+    if (dx * dx + dy * dy <= r2) {
+      enemies.delete(id);
+      removed.push(id);
+    }
+  }
+  return removed;
+}
+
 /** Apply damage to an enemy. Returns { id, health, dead } or null if gone. */
 export function damageEnemy(id, dmg) {
   const e = enemies.get(id);

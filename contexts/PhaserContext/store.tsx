@@ -37,7 +37,7 @@ export const initialState: State = {
   gameShooting: false,
   roundTime: undefined,
   miniGameRoundActive: false,
-  toggleDebugConsole: !['production'].includes(process.env.APP_ENV),
+  toggleDebugConsole: false, // off by default in every env; press F3 in-game to toggle the debug overlay
   toggleMinimap: true,
   toggleChatBar: true,
   toggleChat: false,

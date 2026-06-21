@@ -18,6 +18,11 @@ services:
     restart: unless-stopped
     env_file:
       - ../.env
+    environment:
+      # Aarena combat zone (Lickquidator PVE + gotchi-vs-gotchi PVP). Off by
+      # default in code; enabled here for prod. Auth stays enforced — we do NOT
+      # set ENFORCE_AUTH/REQUIRE_SIWE, so SIWE + gotchi-ownership still apply.
+      - COMBAT_ENABLED=true
     # Localhost-only bind; nginx reverse-proxies realm.gotchicloset.com here.
     ports:
       - "127.0.0.1:8792:8080"

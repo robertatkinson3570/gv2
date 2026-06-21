@@ -11,6 +11,28 @@ export const PUBLIC_WS_URL = process.env.PUBLIC_WS_URL || `ws://localhost:${PORT
 // Single zone id for M1 (no AOI zones / transfers yet).
 export const ZONE_ID = 'citaadel-0';
 
+// #5 Combat lives in the aarena, not the citaadel. Single env switch: with it
+// off there are no enemies anywhere (and the landing "Join Aarena" button stays
+// "COMING SOON"); with it on the aarena becomes a live Lickquidator combat zone
+// while the citaadel stays peaceful. Centralized here so the http config
+// endpoint, gateway, and game actions all read one source of truth.
+export const COMBAT_ENABLED = process.env.COMBAT_ENABLED === 'true';
+
+// The aarena is a dedicated finite map (client public/maps/aarena: 128 tiles *
+// TILE_SIZE = 8192px square), entered via the landing "Join Aarena" button
+// (enter payload carries map='aarena', no parcel spawnLocId). Players spawn at
+// the arena's combat center — the client's COMBAT_TESTING_SPAWN_AREA for aarena
+// (const.game.ts) — and never stream citaadel parcels.
+export const AARENA_ZONE_ID = 'aarena-0';
+export const AARENA_SPAWN = { x: 4096, y: 4096 };
+// Spread concurrent arena spawns so avatars don't stack, while staying near center.
+export const AARENA_SPAWN_JITTER = 600;
+// Spawn protection: on entering the arena and on every respawn, the player takes
+// no enemy damage for this long and no new Lickquidators spawn right on top of
+// them. Without it you spawn into the swarm, die in seconds, auto-respawn into
+// the same swarm, and the "REKT" death screen loops.
+export const AARENA_SPAWN_GRACE_MS = 4000;
+
 // Simulation tick. The client tweens between position updates, so ~30 Hz feels
 // smooth. Movement integrates per tick.
 export const TICK_HZ = 30;

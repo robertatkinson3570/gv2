@@ -8,7 +8,7 @@ export default css`
   }
 
   .main-container {
-    padding: 20rem 4rem 0rem 4rem;
+    padding: 8rem 4rem 0rem 4rem;
     max-width: 1400px;
   }
 
@@ -23,27 +23,14 @@ export default css`
     padding-top: 15rem;
   }
 
-  @media screen and (max-width: 1400px) {
-    .heading {
-      font-size: 16rem;
-      line-height: 14rem;
-    }
-  }
-
-  .components-container {
-    display: flex;
-    padding: 0rem 5rem;
-    gap: 8rem;
-    justify-content: space-evenly;
-  }
   .join-event {
-    padding-top: 5rem;
+    padding-top: 3rem;
     position: relative;
     z-index: 2;
     flex: 1 0 calc(50% - 2.5rem);
   }
   .image-info-container {
-    margin-top: 10rem;
+    margin-top: 4rem;
   }
   .img-container {
     margin: 0 auto;
@@ -58,7 +45,7 @@ export default css`
   .blue-bg {
     background: linear-gradient(0deg, #110f86 -5.21%, #2586bc 71.44%);
     clip-path: polygon(0 0, 100% 20%, 100% 100%, 0 100%);
-    padding-top: 170px;
+    padding-top: 110px;
   }
   .news {
     padding: 0 4rem;
@@ -66,8 +53,8 @@ export default css`
     margin: 0 auto;
   }
   .social {
-    padding-top: 8rem;
-    padding-bottom: 5rem;
+    padding-top: 4rem;
+    padding-bottom: 3rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -114,7 +101,35 @@ export default css`
     background-repeat: repeat;
   }
   .leaderboard-button-container {
-    margin: 2rem 0 7rem 12rem;
+    margin: 2rem 0 4rem 12rem;
     width: calc(100% - 22rem);
+  }
+
+  @media screen and (max-width: 991px) {
+    .main-container {
+      padding: 4rem 2rem 0 2rem;
+    }
+    .image-info-container {
+      margin-top: 2rem;
+    }
+    .blue-bg {
+      padding-top: 80px;
+    }
+    .social {
+      padding-top: 3rem;
+    }
+    .leaderboard-button-container {
+      margin: 1rem 0 3rem 0;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .main-container {
+      padding: 3rem 1.5rem 0 1.5rem;
+    }
+    .blue-bg {
+      padding-top: 60px;
+    }
   }
 `;

@@ -2,6 +2,7 @@ import css from 'styled-jsx/css';
 
 export default css`
   .settings-option {
+    position: relative;
     margin: 0.5rem 0.8rem 0;
     opacity: 0.8;
     cursor: url('/cursors/pointer.png'), pointer;

@@ -535,7 +535,7 @@ async function socketConnect(
         } catch (err) {
           console.warn('@fireEnter:SIWE sign failed (continuing):', err);
         }
-        sendData('enter', null, _.assign({}, playerData, { version, recaptchaToken: token, userAgent: navigator.userAgent, spawnLocId: spawnId, siwe }));
+        sendData('enter', null, _.assign({}, playerData, { version, recaptchaToken: token, userAgent: navigator.userAgent, spawnLocId: spawnId, map: GameController.MAP, siwe }));
         // clear the spawnLocId after passing it, so that it doesn't get passed again on next disconnect/reconnect
         spawnId = null;
       };
@@ -884,47 +884,50 @@ async function socketConnect(
         });
         GlobalState.REALM.dispatch({
           type: 'UPDATE_USER_TRAITS',
+          // Default to the realm server's actual combat values (100 HP / 50 AP, no
+          // trait-based regen) so the HUD never renders "undefined"/"NaN" when the
+          // minimal server omits computed traits. `?? 0` also stops Math.round(undefined).
           userTraits: {
-            alchemicaCarryingCapacity: data.traits?.alchemicaCarryingCapacity,
-            maxHealth: data.traits?.maxHealth,
-            ap: data.traits?.ap,
-            maxAP: data.traits?.maxAP,
-            defense: data.traits?.defense,
-            evasion: data.traits?.evasion,
-            luck: data.traits?.luck,
-            speed: data.traits?.attackSpeed,
-            melee: Math.round(data.traits?.meleePower),
-            range: data.traits?.rangedPower,
-            regen: data.traits?.healthRegenAmount,
-            apRegenAmount: data.traits?.apRegenAmount,
-            healthRegenAmount: data.traits?.healthRegenAmount,
+            alchemicaCarryingCapacity: data.traits?.alchemicaCarryingCapacity ?? 0,
+            maxHealth: data.traits?.maxHealth ?? 100,
+            ap: data.traits?.ap ?? data.traits?.maxAP ?? 50,
+            maxAP: data.traits?.maxAP ?? 50,
+            defense: data.traits?.defense ?? 0,
+            evasion: data.traits?.evasion ?? 0,
+            luck: data.traits?.luck ?? 0,
+            speed: data.traits?.attackSpeed ?? 0,
+            melee: Math.round(data.traits?.meleePower ?? 0),
+            range: data.traits?.rangedPower ?? 0,
+            regen: data.traits?.healthRegenAmount ?? 0,
+            apRegenAmount: data.traits?.apRegenAmount ?? 0,
+            healthRegenAmount: data.traits?.healthRegenAmount ?? 0,
           },
           userTraitsBases: {
-            alchemicaCarryingCapacity: data.traitsBases?.alchemicaCarryingCapacity,
-            maxHealth: data.traitsBases?.maxHealth,
-            ap: data.traitsBases?.ap,
-            maxAP: data.traitsBases?.maxAP,
-            defense: data.traitsBases?.defense,
-            evasion: data.traitsBases?.evasion,
-            luck: data.traitsBases?.luck,
-            speed: data.traitsBases?.attackSpeed,
-            melee: data.traitsBases?.meleePower,
-            range: data.traitsBases?.rangedPower,
+            alchemicaCarryingCapacity: data.traitsBases?.alchemicaCarryingCapacity ?? 0,
+            maxHealth: data.traitsBases?.maxHealth ?? 100,
+            ap: data.traitsBases?.ap ?? 50,
+            maxAP: data.traitsBases?.maxAP ?? 50,
+            defense: data.traitsBases?.defense ?? 0,
+            evasion: data.traitsBases?.evasion ?? 0,
+            luck: data.traitsBases?.luck ?? 0,
+            speed: data.traitsBases?.attackSpeed ?? 0,
+            melee: data.traitsBases?.meleePower ?? 0,
+            range: data.traitsBases?.rangedPower ?? 0,
           },
           userWearableTraitBonuses: {
-            alchemicaCarryingCapacity: data.wearableTraitBonuses?.alchemicaCarryingCapacity,
-            maxHealth: data.wearableTraitBonuses?.maxHealth,
-            ap: data.wearableTraitBonuses?.ap,
-            maxAP: data.wearableTraitBonuses?.maxAP,
-            defense: data.wearableTraitBonuses?.defense,
-            evasion: data.wearableTraitBonuses?.evasion,
-            luck: data.wearableTraitBonuses?.luck,
-            speed: data.wearableTraitBonuses?.attackSpeed,
-            melee: Math.round(data.wearableTraitBonuses?.meleePower),
-            range: data.wearableTraitBonuses?.rangedPower,
-            regen: data.wearableTraitBonuses?.healthRegenAmount,
-            apRegenAmount: data.wearableTraitBonuses?.apRegenAmount,
-            healthRegenAmount: data.wearableTraitBonuses?.healthRegenAmount,
+            alchemicaCarryingCapacity: data.wearableTraitBonuses?.alchemicaCarryingCapacity ?? 0,
+            maxHealth: data.wearableTraitBonuses?.maxHealth ?? 0,
+            ap: data.wearableTraitBonuses?.ap ?? 0,
+            maxAP: data.wearableTraitBonuses?.maxAP ?? 0,
+            defense: data.wearableTraitBonuses?.defense ?? 0,
+            evasion: data.wearableTraitBonuses?.evasion ?? 0,
+            luck: data.wearableTraitBonuses?.luck ?? 0,
+            speed: data.wearableTraitBonuses?.attackSpeed ?? 0,
+            melee: Math.round(data.wearableTraitBonuses?.meleePower ?? 0),
+            range: data.wearableTraitBonuses?.rangedPower ?? 0,
+            regen: data.wearableTraitBonuses?.healthRegenAmount ?? 0,
+            apRegenAmount: data.wearableTraitBonuses?.apRegenAmount ?? 0,
+            healthRegenAmount: data.wearableTraitBonuses?.healthRegenAmount ?? 0,
           },
         });
 

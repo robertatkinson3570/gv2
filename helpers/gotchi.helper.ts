@@ -91,7 +91,11 @@ export async function fetchAndSetGlobalAavegotchis(
 
   if (updateAddresses) {
     const groupByOwner = _.groupBy(gotchis, 'originalOwnerId');
-    const addresses = _.keys(groupByOwner);
+    // Always include the connected wallet. Otherwise a user who only holds *borrowed*
+    // gotchis (originalOwner = lender) ends up with addresses = [lender], so their own
+    // owned parcels are missing from the "all parcels" tab, which queries this set.
+    const currentAccount = GlobalState.WEB3.state.currentAccount;
+    const addresses = _.union(currentAccount ? [currentAccount.toLowerCase()] : [], _.keys(groupByOwner));
     console.log('FETCHED ACCOUNTS:', addresses);
     GlobalState.USER.dispatch({
       type: 'UPDATE_ADDRESSES',

@@ -3,23 +3,27 @@
 
 import { SPAWN, SPAWN_JITTER, GOTCHI_SPEED, SPRINT_FACTOR, TICK_MS, TILE_SIZE } from './config.js';
 import { isBlocked } from './installations.js';
+import { isAarenaBlocked } from './aarenaMap.js';
 import { onRoad } from './parcels.js';
 
 // Gotchis move faster on roads (the gaps between parcels).
 const ROAD_FACTOR = Number(process.env.ROAD_FACTOR) || 1.6;
 
-// Move a session by (dx,dy) px unless an installation footprint blocks the target
-// tile; on a block, slide along whichever axis is free (so walls don't stick).
+// Move a session by (dx,dy) px unless the target tile is blocked; on a block,
+// slide along whichever axis is free (so walls don't stick). The blocker depends
+// on the map: aarena uses its static tilemap walls (+ finite bounds), the
+// citaadel uses on-chain installation footprints.
 function tryMove(session, dx, dy) {
+  const blocks = session.map === 'aarena' ? isAarenaBlocked : isBlocked;
   const nx = session.x + dx;
   const ny = session.y + dy;
-  if (!isBlocked(Math.floor(nx / TILE_SIZE), Math.floor(ny / TILE_SIZE))) {
+  if (!blocks(Math.floor(nx / TILE_SIZE), Math.floor(ny / TILE_SIZE))) {
     session.x = nx;
     session.y = ny;
     return;
   }
-  if (!isBlocked(Math.floor(nx / TILE_SIZE), Math.floor(session.y / TILE_SIZE))) session.x = nx;
-  else if (!isBlocked(Math.floor(session.x / TILE_SIZE), Math.floor(ny / TILE_SIZE))) session.y = ny;
+  if (!blocks(Math.floor(nx / TILE_SIZE), Math.floor(session.y / TILE_SIZE))) session.x = nx;
+  else if (!blocks(Math.floor(session.x / TILE_SIZE), Math.floor(ny / TILE_SIZE))) session.y = ny;
 }
 
 // Direction enum (client `types/index.tsx`) -> unit vector. y+ is down (Phaser).
@@ -57,6 +61,10 @@ export function createSession(ws, data) {
     collateralColor: clampStr(data.collateralColor || '#ffffff', 16),
     level: Math.min(1000, Math.max(1, Number(data.level) || 1)),
     isSpectator: Boolean(data.isSpectator),
+    // Which map the player joined. The landing "Join Aarena" button enters with
+    // map='aarena' (the dedicated combat arena); everything else is the citaadel.
+    // The enter handler overrides x/y with the aarena spawn for arena sessions.
+    map: data.map === 'aarena' ? 'aarena' : 'citaadel',
     x: SPAWN.x + jitter(),
     y: SPAWN.y + jitter(),
     dir: 'none',
@@ -182,6 +190,13 @@ export function tick() {
 
 export function sessionCount() {
   return sessions.size;
+}
+
+/** Count live sessions currently on a given map ('citaadel' | 'aarena'). */
+export function sessionCountOnMap(map) {
+  let n = 0;
+  for (const s of sessions.values()) if ((s.map || 'citaadel') === map) n++;
+  return n;
 }
 
 /** Spawn-player objects for every session except `excludeWs` (existing players). */

@@ -105,5 +105,32 @@ export default css`
     .main-subtitle {
       font-size: 6.8rem;
     }
+
+    .version-container {
+      font-size: 2.4rem;
+    }
+
+    .banner-contents {
+      padding: 8rem 0;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .main-title {
+      font-size: 3rem;
+    }
+
+    .main-subtitle {
+      font-size: 5rem;
+    }
+
+    .version-container {
+      font-size: 1.8rem;
+      line-height: 1.1;
+    }
+
+    .banner-contents {
+      padding: 5rem 0;
+    }
   }
 `;

@@ -3,9 +3,9 @@
 // client's other pre-enter GETs don't throw or spam the console.
 
 import http from 'node:http';
-import { PUBLIC_WS_URL, ZONE_ID } from './config.js';
+import { PUBLIC_WS_URL, ZONE_ID, AARENA_ZONE_ID, COMBAT_ENABLED } from './config.js';
 import { listPlayers } from './playerStore.js';
-import { forEachSession } from './world.js';
+import { forEachSession, sessionCount, sessionCountOnMap } from './world.js';
 import { issueNonce } from './siwe.js';
 
 // Build the leaderboard the client fetches from `${API_URL}/leaderboard/all`.
@@ -67,9 +67,33 @@ export function createHttpServer() {
       return;
     }
 
-    // The one endpoint that matters for M1: hand back this single zone's socket.
+    // Hand back the socket for the requested map. Both maps live on this one
+    // server (ws is shared), so only the zone id differs — the client passes
+    // ?map=aarena when entering the dedicated arena via "Join Aarena".
     if (url.pathname === '/realm/socket') {
-      json(res, 200, { socketUrl: PUBLIC_WS_URL, id: ZONE_ID });
+      const isAarena = url.searchParams.get('map') === 'aarena';
+      json(res, 200, { socketUrl: PUBLIC_WS_URL, id: isAarena ? AARENA_ZONE_ID : ZONE_ID });
+      return;
+    }
+
+    // Live online counts the landing page shows: total ("N players online" in the
+    // VideoBanner) plus the per-map split the "Join Aarena" card renders. Without
+    // this route the client's GET fell through to the catch-all {} below, so the
+    // counts were undefined and the banner literally read "undefined".
+    if (url.pathname === '/users/online') {
+      const count = sessionCount();
+      const aarenaCount = sessionCountOnMap('aarena');
+      json(res, 200, { count, aarenaCount, citaadelCount: count - aarenaCount });
+      return;
+    }
+
+    // Pre-enter game config the landing page fetches (LandingScreen.updateGameConfig
+    // -> /realm/config/list, merged into the client's gameConfig). combatIsLive here
+    // is what un-gates the "Join Aarena" button BEFORE entering; the gateway then
+    // re-asserts it in game-config-update on enter. Without this the path fell to
+    // the catch-all {} (no `data`), so the button was stuck on "COMING SOON".
+    if (url.pathname === '/realm/config/list') {
+      json(res, 200, { data: { combatIsLive: COMBAT_ENABLED, aarenaTheme: 'denver' } });
       return;
     }
 

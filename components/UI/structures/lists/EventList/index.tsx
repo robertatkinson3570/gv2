@@ -2,7 +2,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { RealmEvent } from 'types/realm';
 import { Input, SearchInput, SortSelect } from 'components/UI/elements';
-import { fetchEventsList } from 'helpers/events.helper';
+import { fetchEventsList, DEFAULT_EVENT_ID } from 'helpers/events.helper';
+import { GrimLabsHeroCard } from 'components/UI/structures/GrimLabsHeroCard';
 import { SortOption } from 'types';
 import { useWeb3 } from 'contexts/Web3Context';
 import { HOOD_COL_COUNT, HOOD_ROW_COUNT } from 'shared_code/constants/const.game';
@@ -196,13 +197,17 @@ export const EventList = ({
         <div className="events">
           {loading ? (
             <div className="loading">
-              <Image alt="" src={GotchiverseLoading} height={200} width={330} objectFit="contain" />
+              <Image alt="" src={GotchiverseLoading} height={198} width={168} objectFit="contain" />
             </div>
           ) : (
             <>
-              {filteredEvents?.map((item, i) => (
-                <EventListCard key={i} event={item} onSelect={onSelect} />
-              ))}
+              {filteredEvents?.map((item, i) =>
+                item.id === DEFAULT_EVENT_ID ? (
+                  <GrimLabsHeroCard key={i} event={item} onSelect={onSelect} />
+                ) : (
+                  <EventListCard key={i} event={item} onSelect={onSelect} />
+                ),
+              )}
             </>
           )}
         </div>

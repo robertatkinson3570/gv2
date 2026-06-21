@@ -19,10 +19,10 @@ import { addProgress } from './progression.js';
 import { dropAlchemica } from './alchemica.js';
 import { setDisplay, clearDisplay, nftFor } from './nftDisplayStore.js';
 import { isNftDisplay } from './installations.js';
+import { COMBAT_ENABLED } from './config.js';
 
 // Combat only gates AP when the combat zone is live (citaadel has no AP regen
 // loop, so gating there would strand the harmless fire-for-visual at AP 0).
-const COMBAT_ENABLED = process.env.COMBAT_ENABLED === 'true';
 // AP spent per attack. With +2/s regen and maxAP 50 this caps sustained fire to
 // a realistic rate instead of the previous free, unlimited kill/XP farming.
 const AP_COST = { fire: 3, melee: 2 };
@@ -184,6 +184,10 @@ export function handleCombatAction(ctx, payload) {
   } else if (action === 'melee') {
     ctx.sendAll('enter', { melee: [{ id: `me-${s.id}-${data.seq ?? 0}`, ownerId: s.id, x: Math.round(s.x), y: Math.round(s.y), angle: data.angle ?? 0 }] });
   }
+  // Server-authoritative hits only land in the aarena (the combat map). Citaadel
+  // fire stays a pure visual relay, so a stray shot can never touch arena enemies
+  // (which live in a far coordinate space and aren't even streamed to citaadel).
+  if (s.map !== 'aarena') return;
   // Damage the nearest enemy within weapon range (no-op when no enemies / combat off).
   const range = action === 'melee' ? 140 : 650;
   const dmg = action === 'melee' ? 18 : 12;
@@ -200,7 +204,9 @@ export function handleCombatAction(ctx, payload) {
       ctx.sendAll('health-changed', { id: hit.id, health: hit.health, damage: dmg, type: 'enemy' });
     }
   }
-
+  // PVP: the same shot also hits the nearest OTHER gotchi in range. The aarena is
+  // a player-vs-player arena, so other gotchis can damage and kill you too.
+  ctx.damageNearestPlayer(range, dmg, s.name);
 }
 
 /** Route an `installations` frame ({ action, data }). */

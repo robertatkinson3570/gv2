@@ -30,7 +30,7 @@ export const LoadingScene = ({ isAarena = false }: Props): JSX.Element => {
           <Image alt="" src={isAarena ? LoadingAarenaBg : LoadingBackground} layout="fill" className="bg-animation" objectFit="cover" />
         </div>
         <div className="content">
-          <Image alt="" src={GotchiverseLoading} height={200} width={330} objectFit="contain" />
+          <Image alt="" src={GotchiverseLoading} height={198} width={168} objectFit="contain" />
           <div className="tip-container">
             <div className="tip-icon-container">
               <Image alt="" src={isAarena ? CauldronGif : LightIcon} layout="fill" />

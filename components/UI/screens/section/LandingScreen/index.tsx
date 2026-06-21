@@ -236,7 +236,7 @@ export const LandingScreen = (): JSX.Element => {
             </Parallax>
           </div>
 
-          <div className="main-container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div className="main-container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
             <div className="join-event">
               <JoinEvent handleSpawnSelect={handleSpawnSelect} />
             </div>
@@ -259,7 +259,7 @@ export const LandingScreen = (): JSX.Element => {
           </div>
 
           <div className="blue-bg">
-            <div className="news gap-40 w-full flex">
+            <div className="news gap-12 lg:gap-16 w-full flex flex-col lg:flex-row">
               <NewsList />
               <div className="image-info-container">
                 <div className="img-container">

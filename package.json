@@ -1,6 +1,6 @@
 {
   "name": "gotchiverse-2d",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "private": true,
   "packageManager": "yarn@1.22.22",
   "engines": {
