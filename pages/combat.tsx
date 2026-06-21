@@ -11,6 +11,7 @@ import { fetchAavegotchiURL } from 'helpers/gotchi.helper';
 import GameController from 'components/controllers/GameController';
 import { AarenaLobby } from 'components/UI/hud/components';
 import { LoadingScene } from 'components/UI/sections';
+import { ErrorBoundary } from 'components/utility/ErrorBoundary';
 
 const Combat = () => {
   const [{ currentAccount, currentNetwork, globalProvider }] = useWeb3();
@@ -82,8 +83,16 @@ const Combat = () => {
       </Head>
       {(!gameLoaded || !selectedPlayer || !connected) && <LoadingScene isAarena />}
       {selectedPlayer && <PhaserGameLoader gameScene={gameScene} />}
-      {connected && gameLoaded && <Hud />}
-      {gameLoaded && socketConnected && <AarenaLobby />}
+      {connected && gameLoaded && (
+        <ErrorBoundary label="hud">
+          <Hud />
+        </ErrorBoundary>
+      )}
+      {gameLoaded && socketConnected && (
+        <ErrorBoundary label="aarena-lobby">
+          <AarenaLobby />
+        </ErrorBoundary>
+      )}
     </>
   );
 };
