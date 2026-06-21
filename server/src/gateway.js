@@ -10,6 +10,7 @@ import {
   toSpawnPlayer,
   setDirection,
   setSprint,
+  setCart,
   setSpawn,
   setTarget,
   clearTarget,
@@ -591,6 +592,8 @@ export function handleMessage(ws, raw) {
         setDirection(session, payload.direction, payload.isSprint);
       } else if (action === 'toggle_sprint') {
         setSprint(session, Boolean(payload.action));
+      } else if (action === 'toggle_cart') {
+        setCart(session, payload.action === 'on');
       } else if (action === 'mouse') {
         // Click-to-move: { position:{x,y}, active, sprint }. active=false => stop.
         if (payload.active && payload.position) setTarget(session, payload.position, payload.sprint);

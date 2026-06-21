@@ -34,6 +34,7 @@ import {
 import { GameNav } from 'components/UI/structures';
 import { SuperChatList } from 'components/UI/component/superChat/SuperChatList';
 import { DebugConsole } from 'components/UI/component/extras/DebugConsole';
+import { GocartButton } from 'components/UI/hud/components/GocartButton';
 import { ItemShop } from '../components/ItemShop';
 import { useGame } from 'contexts/GameContext';
 
@@ -257,6 +258,15 @@ export const PlayHud = () => {
 
       <div className="right-container" onClick={blockPropagation} onMouseDown={blockPropagation}>
         {itemShopOpen && <ItemShop open={itemShopOpen} onClose={() => setItemShopOpen(false)} />}
+      </div>
+
+      <div
+        className="gocart-button-container"
+        style={{ position: 'absolute', bottom: '13rem', left: '50%', transform: 'translateX(-50%)', zIndex: 30 }}
+        onClick={blockPropagation}
+        onMouseDown={blockPropagation}
+      >
+        <GocartButton />
       </div>
 
       <div className="bottom-right-container">

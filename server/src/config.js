@@ -42,6 +42,9 @@ export const TICK_MS = Math.round(1000 / TICK_HZ);
 // per game loop, SPRINT_FACTOR 2. We apply per tick.
 export const GOTCHI_SPEED = 14;
 export const SPRINT_FACTOR = 2;
+// Gocart: a button-toggled speed boost (~10x running). Collision is sub-stepped
+// in world.js so it can't tunnel through walls at this speed.
+export const CART_FACTOR = Number(process.env.CART_FACTOR) || 10;
 
 // Citaadel spawn. COMBAT_TESTING_SPAWN_AREA from the client map config — a known
 // valid in-map coordinate (mid-map, outside every NO_SPAWN_ZONE). Chunks load

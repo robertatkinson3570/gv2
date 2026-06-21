@@ -1,7 +1,7 @@
 // World state for Milestone 1: a single citaadel zone holding player sessions,
 // integrating their movement from input each tick. No collision/bounds yet.
 
-import { SPAWN, SPAWN_JITTER, GOTCHI_SPEED, SPRINT_FACTOR, TICK_MS, TILE_SIZE } from './config.js';
+import { SPAWN, SPAWN_JITTER, GOTCHI_SPEED, SPRINT_FACTOR, CART_FACTOR, TICK_MS, TILE_SIZE } from './config.js';
 import { isBlocked } from './installations.js';
 import { isAarenaBlocked } from './aarenaMap.js';
 import { onRoad } from './parcels.js';
@@ -9,11 +9,25 @@ import { onRoad } from './parcels.js';
 // Gotchis move faster on roads (the gaps between parcels).
 const ROAD_FACTOR = Number(process.env.ROAD_FACTOR) || 1.6;
 
-// Move a session by (dx,dy) px unless the target tile is blocked; on a block,
-// slide along whichever axis is free (so walls don't stick). The blocker depends
-// on the map: aarena uses its static tilemap walls (+ finite bounds), the
-// citaadel uses on-chain installation footprints.
+// Cap each collision step under a tile (64px) so a fast gocart tick (~140px)
+// can't skip over a wall tile and tunnel through it.
+const STEP_MAX = TILE_SIZE / 2;
+
+// Move a session by (dx,dy) px, sub-stepping so fast (cart) moves still collide
+// every tile they cross instead of jumping over walls.
 function tryMove(session, dx, dy) {
+  const dist = Math.hypot(dx, dy);
+  const steps = dist > STEP_MAX ? Math.ceil(dist / STEP_MAX) : 1;
+  const sx = dx / steps;
+  const sy = dy / steps;
+  for (let i = 0; i < steps; i++) stepMove(session, sx, sy);
+}
+
+// One collision step: move unless the target tile is blocked; on a block, slide
+// along whichever axis is free (so walls don't stick). The blocker depends on the
+// map: aarena uses its static tilemap walls (+ finite bounds), the citaadel uses
+// on-chain installation footprints.
+function stepMove(session, dx, dy) {
   const blocks = session.map === 'aarena' ? isAarenaBlocked : isBlocked;
   const nx = session.x + dx;
   const ny = session.y + dy;
@@ -69,6 +83,7 @@ export function createSession(ws, data) {
     y: SPAWN.y + jitter(),
     dir: 'none',
     sprint: false,
+    onCart: false,
     chatChannel: 'global',
   };
   sessions.set(ws, session);
@@ -112,6 +127,15 @@ export function setSprint(session, sprint) {
   if (session) session.sprint = Boolean(sprint);
 }
 
+/** Toggle the gocart speed boost on/off (button-driven from the client). */
+export function setCart(session, onCart) {
+  if (!session) return;
+  session.onCart = Boolean(onCart);
+  // Force one position frame next tick (even if standing still) so the client
+  // shows/hides the kart sprite the instant the button is clicked.
+  session._wasMoving = true;
+}
+
 /** Override a session's spawn position (e.g. onto the player's own parcel). */
 export function setSpawn(session, x, y) {
   if (!session) return;
@@ -153,7 +177,7 @@ export function tick() {
     let vec = DIR_VECTORS[session.dir] || DIR_VECTORS.none;
     let moving = vec.x !== 0 || vec.y !== 0;
     const roadBoost = onRoad(Math.floor(session.x / TILE_SIZE), Math.floor(session.y / TILE_SIZE)) ? ROAD_FACTOR : 1;
-    const speed = GOTCHI_SPEED * (session.sprint ? SPRINT_FACTOR : 1) * roadBoost * dtScale;
+    const speed = GOTCHI_SPEED * (session.sprint ? SPRINT_FACTOR : 1) * (session.onCart ? CART_FACTOR : 1) * roadBoost * dtScale;
 
     if (session.target) {
       // Click-to-move: head toward the target world point, settle on arrival.
@@ -181,6 +205,7 @@ export function tick() {
         y: Math.round(session.y),
         direction: vec,
         isSprinting: session.sprint,
+        isCart: !!session.onCart,
       });
     }
     session._wasMoving = moving;

@@ -87,6 +87,7 @@ export interface PositionEvent {
   y?: number;
   direction?: Vector2;
   isSprinting?: boolean;
+  isCart?: boolean;
   noTween?: boolean;
 }
 

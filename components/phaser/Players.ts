@@ -650,7 +650,7 @@ let lastPlayerPositionUpdateTime = 0;
 const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
 function updatePlayerPosition(playerPosition: PositionEvent): void {
-  const { id, x, y, direction, isSprinting, noTween } = playerPosition;
+  const { id, x, y, direction, isSprinting, isCart, noTween } = playerPosition;
   if (averageMovementTweens) {
     const now = Date.now();
     if (lastPlayerPositionUpdateTime) {
@@ -684,6 +684,7 @@ function updatePlayerPosition(playerPosition: PositionEvent): void {
       scene[id].movementOrientation = orientation;
     }
     if (_.has(playerPosition, 'isSprinting')) handleSprint(id, isSprinting, direction);
+    if (_.has(playerPosition, 'isCart')) handleCart(id, isCart, direction);
     if (_.has(playerPosition, 'direction') && GlobalState.SETTINGS.state.allowPlayerAnimation && direction) updateSprintFX(id, direction);
     if (!x || !y) return;
 
@@ -815,6 +816,51 @@ function disableSprint(id) {
     SFXController.soundLoopStop('sprint_loop');
   }
   if (scene[id]) scene[id].sprintSfxOn = false; // re-arm the sprint-start sound
+}
+
+// --- Gocart: a small cute top-down kart drawn under the gotchi while boosting.
+// The texture is drawn facing +x (right); setAngle(getAngleByDirV2(direction))
+// keeps its nose pointing where the player is heading.
+function ensureKartTexture(scn): void {
+  if (scn.textures.exists('gocart_kart')) return;
+  const g = scn.add.graphics();
+  // wheels (dark) at the four corners
+  g.fillStyle(0x161616, 1);
+  g.fillRoundedRect(12, 3, 12, 9, 3);
+  g.fillRoundedRect(12, 28, 12, 9, 3);
+  g.fillRoundedRect(34, 3, 12, 9, 3);
+  g.fillRoundedRect(34, 28, 12, 9, 3);
+  // body
+  g.fillStyle(0xff4d4d, 1);
+  g.fillRoundedRect(8, 9, 40, 22, 9);
+  // seat well where the gotchi sits
+  g.fillStyle(0x8a1f1f, 1);
+  g.fillRoundedRect(19, 13, 18, 14, 6);
+  // pointed nose at the front (+x) in a bright accent so the front reads clearly
+  g.fillStyle(0xffd23b, 1);
+  g.fillTriangle(46, 11, 57, 20, 46, 29);
+  // headlight
+  g.fillStyle(0xffffff, 1);
+  g.fillCircle(51, 20, 1.8);
+  g.generateTexture('gocart_kart', 60, 40);
+  g.destroy();
+}
+
+function handleCart(id: string, isCart: boolean, direction?: Vector2): void {
+  if (!scene[id]) return;
+  let kart = scene[id].getByName('gocart');
+  if (isCart) {
+    if (!kart) {
+      ensureKartTexture(scene);
+      kart = scene.add.image(0, 8, 'gocart_kart').setName('gocart').setOrigin(0.5).setScale(0.74);
+      scene[id].add(kart);
+      scene[id].sendToBack(kart); // render beneath the gotchi sprite, above the shadow
+    }
+    kart.setVisible(true);
+    if (direction && (direction.x || direction.y)) kart.setAngle(getAngleByDirV2(direction));
+  } else if (kart) {
+    kart.destroy();
+  }
 }
 
 function updateSprintFX(id, direction: Vector2) {
