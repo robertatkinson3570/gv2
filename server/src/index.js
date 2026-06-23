@@ -4,7 +4,7 @@
 
 import { WebSocketServer } from 'ws';
 import { createHttpServer } from './httpServer.js';
-import { handleMessage, handleClose, broadcast, updateAoi, collectAlchemica, streamAlchemica, streamEnemies, send, damageArenaPlayer, COMBAT_ENABLED } from './gateway.js';
+import { handleMessage, handleClose, broadcast, updateAoi, collectAlchemica, streamAlchemica, streamEnemies, streamVortex, send, damageArenaPlayer, COMBAT_ENABLED } from './gateway.js';
 import { produceNear } from './alchemica.js';
 import { spawnEnemies, enemiesNear, combatTick, enemyCount } from './combat.js';
 import { tick, forEachSession } from './world.js';
@@ -37,9 +37,13 @@ setInterval(() => {
   });
 }, 1000);
 
-// Pickup loop: collect ground alchemica players are standing on (server-authoritative).
+// Pickup loop: collect ground alchemica players are standing on (server-authoritative),
+// and raise/lower the Vortex "press to open" prompt as players near deposit stations.
 setInterval(() => {
-  forEachSession((ws, session) => collectAlchemica(ws, session));
+  forEachSession((ws, session) => {
+    collectAlchemica(ws, session);
+    streamVortex(ws, session);
+  });
 }, 200);
 
 // Alchemica loop: harvesters on built parcels near players produce ground alchemica

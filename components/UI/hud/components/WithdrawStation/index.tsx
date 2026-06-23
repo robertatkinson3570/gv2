@@ -52,7 +52,8 @@ export const WithdrawStation = (): JSX.Element => {
     }
 
     const grecaptcha = (window as any).grecaptcha;
-    grecaptcha.enterprise.ready(async function () {
+
+    const submitWithdraw = async () => {
       // this generates an encrypted recaptcha enterprise token to validate server side with the transaction
       let token;
       if (gameConfig.enableRECAPTCHA) {
@@ -73,7 +74,18 @@ export const WithdrawStation = (): JSX.Element => {
 
       Alchemicas.setAlchemicaHUD(false);
       Alchemicas.handleOnDepositAnimation(depositId);
-    });
+    };
+
+    // reCAPTCHA is optional (off for the self-hosted realm server, which has no
+    // enterprise key). Only route through grecaptcha when it's enabled AND loaded;
+    // otherwise fire the withdraw directly. Previously this called
+    // grecaptcha.enterprise.ready() unconditionally, so with recaptcha disabled
+    // `grecaptcha` was undefined and the whole withdraw threw before sending.
+    if (gameConfig.enableRECAPTCHA && grecaptcha?.enterprise?.ready) {
+      grecaptcha.enterprise.ready(submitWithdraw);
+    } else {
+      await submitWithdraw();
+    }
   };
 
   const handleWithdrawConfirmation = (data) => {

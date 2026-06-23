@@ -29,6 +29,7 @@ import { fetchOwnerParcels, loadAllParcels, fetchNearbyBuiltParcels } from './pa
 import { fetchParcelInstallations, fetchParcelTiles } from './installations.js';
 import { nftFor } from './nftDisplayStore.js';
 import { itemsNear, collectAt, totalItems, registerParcelProducers } from './alchemica.js';
+import { nearestVortex } from './vortex.js';
 import { loadPlayer, savePlayer } from './playerStore.js';
 import { verifyGotchiAccess } from './auth.js';
 import { verifySiwe, addrEq } from './siwe.js';
@@ -214,6 +215,24 @@ export function collectAlchemica(ws, session) {
     triggerSound: `pickup_${got[0].label}_sound_small`,
   });
   if (alchemicaSum >= ALCH_CAPACITY) send(ws, 'items', { action: 'full-pocket' });
+}
+
+// Show/hide the Vortex "press to open" prompt as the player moves in/out of a
+// deposit station's range. The client wires the button + glow off this 'withdraw'
+// message (Alchemicas.ts initWithdrawStation); depositId indexes the shared deposit
+// list. Emit only on enter/leave (tracked per session) so we don't spam every tick.
+export function streamVortex(ws, session) {
+  if (!session) return;
+  if ((session.map || 'citaadel') !== 'citaadel') return; // deposit stations live in the citaadel
+  const near = nearestVortex(session.x, session.y);
+  const prev = session.nearDepositId ?? -1;
+  if (near === prev) return;
+  session.nearDepositId = near;
+  // type:true -> show the prompt at `near`; type:false -> hide (reference the station we left).
+  send(ws, 'items', {
+    action: 'withdraw',
+    data: { type: near >= 0, depositId: near >= 0 ? near : prev, alchemica: session.carried || [0, 0, 0, 0] },
+  });
 }
 
 // Stream Lickquidators near the player (and cull far ones), like alchemica.
