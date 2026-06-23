@@ -158,6 +158,14 @@ export function handleAlchemicaAction(ctx, payload) {
       action: 'player-wallet-update',
       items: { fud: s.wallet[0], fomo: s.wallet[1], alpha: s.wallet[2], kek: s.wallet[3] },
     });
+    // Resolve the client's "Withdraw Initiated… (Pending)" toast. The client flips
+    // it to success when it receives a transactionState via 'withdraw-confirmation'
+    // (Alchemicas.ts -> WithdrawStation). Without this the toast hangs on Pending
+    // forever even though the bank above already succeeded.
+    ctx.sendSelf('items', {
+      action: 'withdraw-confirmation',
+      transactionState: { data: { status: 'COMPLETED', amount: moved } },
+    });
   }
 }
 
